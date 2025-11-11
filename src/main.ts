@@ -16,7 +16,7 @@ async function bootstrap() {
   const nodeEnv = configService.get<string>('NODE_ENV', 'development');
 
   // Global prefix
-  app.setGlobalPrefix('api');
+  // app.setGlobalPrefix('api');
 
   // Global validation pipe
   app.useGlobalPipes(

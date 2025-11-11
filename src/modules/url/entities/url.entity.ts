@@ -38,6 +38,9 @@ export class Url extends BaseEntity {
   @Column({ type: 'varchar', length: 60, nullable: true })
   password: string | null;
 
+  @Column({ type: 'int', default: 0 })
+  maxClicks: number | null;
+
   // Relation to click tracking
   @OneToMany(() => Click, (click) => click.url, {
     cascade: false,
