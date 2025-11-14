@@ -21,7 +21,7 @@ export class Click extends BaseEntity {
   ipAddress: string;
 
   @Column({ type: 'text', nullable: true })
-  userAgent: string;
+  userAgent: string | null;
 
   @Column({ type: 'text', nullable: true })
   referer: string | null;

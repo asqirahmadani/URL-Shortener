@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { BullModule } from '@nestjs/bull';
+import { BullModule } from '@nestjs/bullmq';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -32,10 +32,11 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
 
     // Redis for BullMQ
     BullModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        redis: getRedisConfig(configService),
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        connection: getRedisConfig(configService),
       }),
+      inject: [ConfigService],
     }),
 
     UrlModule,

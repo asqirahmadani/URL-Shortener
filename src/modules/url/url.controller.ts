@@ -14,12 +14,15 @@ import {
   Res,
   Logger,
 } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
+import type { Request, Response } from 'express';
+
 import { PaginatedResponseDto } from './dto/paginated-url-response.dto';
+import { AnalyticsService } from '../analytics/analytics.service';
+import { ClickEventDto } from '../analytics/dto/click-event.dto';
 import { UrlResponseDto } from './dto/url-response.dto';
 import { CreateUrlDto } from './dto/create-url.dto';
 import { UpdateUrlDto } from './dto/update-url.dto';
-import { plainToInstance } from 'class-transformer';
-import type { Request, Response } from 'express';
 import { UrlService } from './url.service';
 
 /*
@@ -29,7 +32,10 @@ import { UrlService } from './url.service';
 export class UrlController {
   private readonly logger = new Logger(UrlController.name);
 
-  constructor(private readonly urlService: UrlService) {}
+  constructor(
+    private readonly urlService: UrlService,
+    private readonly analyticsService: AnalyticsService,
+  ) {}
 
   /* 
   Create short URL
@@ -144,15 +150,34 @@ export class UrlController {
     @Req() req: Request,
   ): Promise<void> {
     try {
+      const url = await this.urlService.getUrlByShortCode(shortCode);
+
       const originalUrl = await this.urlService.getOriginalUrl(
         shortCode,
         password,
       );
       this.logger.debug(`Redirecting ${shortCode} to ${originalUrl}`);
-      // TODO: Enqueue click tracking job
 
-      // HTTP 301 = Permanent Redirect (cached by browsers)
-      // HTTP 302 = Temporary Redirect (not cached, better for analytics)
+      // Extranct request info for analytics
+      const ipAddress = this.getClientIP(req);
+      const userAgent = Array.isArray(req.headers['user-agent'])
+        ? req.headers['user-agent'][0]
+        : req.headers['user-agent'] || '';
+      const _refererHeader = req.headers['referer'] ?? req.headers['referrer'];
+      const referer = Array.isArray(_refererHeader)
+        ? _refererHeader[0]
+        : _refererHeader || '';
+
+      // Enqueue click tracking
+      const clickEvent: ClickEventDto = {
+        urlId: url.id,
+        ipAddress,
+        userAgent,
+        referer,
+      };
+
+      await this.analyticsService.enqueueClickEvent(clickEvent);
+
       res.redirect(302, originalUrl);
     } catch (error) {
       this.logger.error(`Redirect error for ${shortCode}: ${error.message}`);
@@ -173,5 +198,23 @@ export class UrlController {
       status: 'ok',
       timestamp: new Date().toISOString(),
     };
+  }
+
+  /* 
+  Helper: Extract client IP from request
+  */
+  private getClientIP(req: Request): string {
+    const forwarded = req.headers['x-real-ip'];
+    if (forwarded) {
+      const ips = (forwarded as string).split(',');
+      return ips[0].trim();
+    }
+
+    const realIp = req.headers['x-real-ip'];
+    if (realIp) {
+      return realIp as string;
+    }
+
+    return req.ip || req.socket.remoteAddress || '127.0.0.1';
   }
 }
