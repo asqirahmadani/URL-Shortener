@@ -70,6 +70,40 @@ export class UrlController {
   }
 
   /* 
+  List all URLs with pagination
+  */
+  @Get('api/urls-admin')
+  async getAllUrls(
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10',
+    @Query('password') password: string,
+    @Req() req: Request,
+  ): Promise<PaginatedResponseDto> {
+    const pageNum = Math.max(1, parseInt(page));
+    const limitNum = Math.min(100, Math.max(1, parseInt(limit)));
+
+    const result = await this.urlService.getAllUrls(
+      pageNum,
+      limitNum,
+      password,
+    );
+
+    const urls = result.urls.map((url) =>
+      plainToInstance(UrlResponseDto, url, {
+        excludeExtraneousValues: true,
+      }),
+    );
+
+    return {
+      urls,
+      total: result.total,
+      page: result.page,
+      totalPages: result.totalPages,
+      limit: limitNum,
+    };
+  }
+
+  /* 
   List user's URLs with pagination
   */
   @Get('api/urls')

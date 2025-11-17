@@ -3,16 +3,19 @@ import {
   ConflictException,
   NotFoundException,
   BadRequestException,
+  UnauthorizedException,
   Logger,
 } from '@nestjs/common';
 import { Repository, FindOptionsWhere } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateUrlDto } from './dto/create-url.dto';
-import { UpdateUrlDto } from './dto/update-url.dto';
 import { ConfigService } from '@nestjs/config';
-import { Url } from './entities/url.entity';
 import { customAlphabet } from 'nanoid';
 import * as bcrypt from 'bcrypt';
+
+import { CacheService } from '../../common/cache/cache.service';
+import { CreateUrlDto } from './dto/create-url.dto';
+import { UpdateUrlDto } from './dto/update-url.dto';
+import { Url } from './entities/url.entity';
 
 @Injectable()
 export class UrlService {
@@ -28,6 +31,7 @@ export class UrlService {
     @InjectRepository(Url)
     private readonly urlRepository: Repository<Url>,
     private readonly configService: ConfigService,
+    private readonly cacheService: CacheService,
   ) {
     this.shortCodeLength = this.configService.get<number>(
       'SHORT_CODE_LENGTH',
@@ -147,12 +151,36 @@ export class UrlService {
   }
 
   async getOriginalUrl(shortCode: string, password?: string): Promise<string> {
-    const url = await this.urlRepository.findOne({
-      where: { shortCode },
-    });
+    const cacheKey = this.cacheService.urlLookupKey(shortCode);
 
-    if (!url) {
-      throw new NotFoundException(`Short URL "${shortCode}" tidak ditemukan!`);
+    const cached = await this.cacheService.get<Url>(cacheKey);
+
+    let url: Url;
+
+    if (cached) {
+      // Cache HIT
+      url = cached;
+      this.logger.debug(`Cache HIT for ${shortCode}`);
+    } else {
+      // Cache MISS
+      const foundUrl = await this.urlRepository.findOne({
+        where: { shortCode },
+      });
+
+      if (!foundUrl) {
+        throw new NotFoundException(
+          `Short URL "${shortCode}" tidak ditemukan!`,
+        );
+      }
+
+      url = foundUrl;
+
+      await this.cacheService.set(
+        cacheKey,
+        url,
+        this.cacheService.getTTL('URL_LOOKUP'),
+      );
+      this.logger.debug(`Cache MISS for ${shortCode}, saved to cache`);
     }
 
     if (url.deletedAt) {
@@ -212,6 +240,36 @@ export class UrlService {
     return url;
   }
 
+  async getAllUrls(
+    page: number = 1,
+    limit: number = 10,
+    password: string,
+  ): Promise<{ urls: Url[]; total: number; page: number; totalPages: number }> {
+    if (
+      !password ||
+      password !== this.configService.get<string>('ADMIN_PASS')
+    ) {
+      throw new UnauthorizedException(
+        'Need a correct password to access this!',
+      );
+    }
+
+    const skip = (page - 1) * limit;
+
+    const [urls, total] = await this.urlRepository.findAndCount({
+      order: { createdAt: 'DESC' },
+      take: limit,
+      skip,
+    });
+
+    return {
+      urls,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    };
+  }
+
   async getUserUrls(
     userId: string,
     page: number = 1,
@@ -264,7 +322,12 @@ export class UrlService {
     }
 
     const updatedUrl = await this.urlRepository.save(url);
-    this.logger.log(`Updated URL ${id}`);
+
+    // Invalidate cache
+    const cacheKey = this.cacheService.urlLookupKey(url.shortCode);
+    await this.cacheService.del(cacheKey);
+
+    this.logger.log(`Updated URL ${id} and invalidated cache`);
 
     return updatedUrl;
   }
@@ -273,11 +336,23 @@ export class UrlService {
     const url = await this.getUrlById(id);
 
     await this.urlRepository.softRemove(url);
-    this.logger.log(`Soft deleted URL ${id}`);
+
+    // Invalidate cache
+    const cacheKey = this.cacheService.urlLookupKey(url.shortCode);
+    await this.cacheService.del(cacheKey);
+
+    this.logger.log(`Soft deleted URL ${id} and invalidated cache`);
   }
 
   async incrementClickCount(urlId: string): Promise<void> {
     await this.urlRepository.increment({ id: urlId }, 'clickCount', 1);
+
+    // Invalidate URL cache
+    const url = await this.urlRepository.findOne({ where: { id: urlId } });
+    if (url) {
+      const cacheKey = this.cacheService.urlLookupKey(url.shortCode);
+      await this.cacheService.del(cacheKey);
+    }
   }
 
   async getExpiringUrls(daysAhead: number = 7): Promise<Url[]> {
