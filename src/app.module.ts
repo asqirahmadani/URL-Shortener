@@ -11,6 +11,9 @@ import { CacheModule } from './common/cache/cache.module';
 import { UrlModule } from './modules/url/url.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { QrcodeModule } from './modules/qrcode/qrcode.module';
+import { SchedulerModule } from './modules/scheduler/scheduler.module';
+import { RateLimitModule } from './modules/rate-limit/rate-limit.module';
 
 @Module({
   imports: [
@@ -44,6 +47,9 @@ import { AppService } from './app.service';
     CacheModule,
     UrlModule,
     AnalyticsModule,
+    QrcodeModule,
+    SchedulerModule,
+    RateLimitModule,
   ],
   controllers: [AppController],
   providers: [AppService],
