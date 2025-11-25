@@ -380,4 +380,84 @@ export class UrlService {
 
     return deletedCount;
   }
+
+  /* 
+  Bulk create short URLs
+  */
+  async bulkCreateShortUrls(
+    createUrlDtos: CreateUrlDto[],
+    userId?: string,
+  ): Promise<Url[]> {
+    const results: Url[] = [];
+
+    // use transaction for ensure all or nothing
+    await this.urlRepository.manager.transaction(async (manager) => {
+      for (const dto of createUrlDtos) {
+        const {
+          originalUrl,
+          customAlias,
+          password,
+          expiresAt,
+          maxClicks,
+          title,
+        } = dto;
+
+        // validate URL
+        this.validateUrl(originalUrl);
+
+        let shortCode: string;
+
+        if (customAlias) {
+          const existing = await manager.findOne(Url, {
+            where: { shortCode: customAlias },
+          });
+
+          if (existing) {
+            // skip duplicate
+            this.logger.warn(`Skipping duplicate alias: ${customAlias}`);
+            continue;
+          }
+
+          shortCode = customAlias;
+        } else {
+          shortCode = await this.generateUniqueShortCode();
+        }
+
+        let hashedPassword: string | null = null;
+        if (password) {
+          hashedPassword = await bcrypt.hash(password, 10);
+        }
+
+        let expirationDate: Date | null = null;
+        if (expiresAt) {
+          expirationDate = new Date(expiresAt);
+          if (expirationDate < new Date()) {
+            this.logger.warn(
+              `Skipping URL wuth past expiration: ${originalUrl}`,
+            );
+            continue;
+          }
+        }
+
+        const url = manager.create(Url, {
+          originalUrl,
+          shortCode,
+          customAlias,
+          title,
+          userId: userId || null,
+          password: hashedPassword,
+          expiresAt: expirationDate,
+          maxClicks: maxClicks || 0,
+          isActive: true,
+          clickCount: 0,
+        });
+
+        const savedUrl = await manager.save(url);
+        results.push(savedUrl);
+      }
+    });
+
+    this.logger.log(`Bulk created ${results.length} URLs`);
+    return results;
+  }
 }

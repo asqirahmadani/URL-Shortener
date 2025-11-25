@@ -3,17 +3,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 
+import { RateLimitModule } from './modules/rate-limit/rate-limit.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { SchedulerModule } from './modules/scheduler/scheduler.module';
 import { envValidationSchema } from './common/config/env.validation';
 import { getDatabaseConfig } from './common/config/database.config';
 import { getRedisConfig } from './common/config/redis.config';
+import { QrcodeModule } from './modules/qrcode/qrcode.module';
+import { AdminModule } from './modules/admin/admin.module';
 import { CacheModule } from './common/cache/cache.module';
 import { UrlModule } from './modules/url/url.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { QrcodeModule } from './modules/qrcode/qrcode.module';
-import { SchedulerModule } from './modules/scheduler/scheduler.module';
-import { RateLimitModule } from './modules/rate-limit/rate-limit.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { RateLimitModule } from './modules/rate-limit/rate-limit.module';
     QrcodeModule,
     SchedulerModule,
     RateLimitModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

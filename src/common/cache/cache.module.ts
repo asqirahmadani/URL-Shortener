@@ -3,6 +3,7 @@ import * as redisStore from 'cache-manager-redis-store';
 import { Module, Global } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+import { CacheMetricsService } from './cache-metrics.service';
 import { CacheService } from './cache.service';
 
 /* 
@@ -28,7 +29,7 @@ Cache Module - Global cache configuration
       }),
     }),
   ],
-  providers: [CacheService],
-  exports: [NestCacheModule, CacheService],
+  providers: [CacheService, CacheMetricsService],
+  exports: [NestCacheModule, CacheService, CacheMetricsService],
 })
 export class CacheModule {}

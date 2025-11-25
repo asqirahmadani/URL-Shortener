@@ -13,13 +13,18 @@ import {
   Req,
   Res,
   Logger,
+  BadRequestException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import type { Request, Response } from 'express';
 
+import { RateLimit } from '../rate-limit/decorators/rate-limit.decorator';
 import { PaginatedResponseDto } from './dto/paginated-url-response.dto';
+import { RateLimitGuard } from '../rate-limit/guards/rate-limit.guard';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { ClickEventDto } from '../analytics/dto/click-event.dto';
+import { BulkCreateUrlDto } from './dto/bulk-create-url.dto';
+import { UrlPreviewService } from './url-preview.service';
 import { UrlResponseDto } from './dto/url-response.dto';
 import { CreateUrlDto } from './dto/create-url.dto';
 import { UpdateUrlDto } from './dto/update-url.dto';
@@ -29,18 +34,21 @@ import { UrlService } from './url.service';
  URL Controller - RESTful endpoints for URL Shortening
  */
 @Controller()
+@UseGuards(RateLimitGuard)
 export class UrlController {
   private readonly logger = new Logger(UrlController.name);
 
   constructor(
     private readonly urlService: UrlService,
     private readonly analyticsService: AnalyticsService,
+    private readonly urlPreviewService: UrlPreviewService,
   ) {}
 
   /* 
-  Create short URL
+  Create short URL (strict rate limit)
   */
   @Post('/api/urls')
+  @RateLimit({ ttl: 60, max: 5 })
   @HttpCode(HttpStatus.CREATED)
   async createdShortUrl(
     @Body() createUrlDto: CreateUrlDto,
@@ -55,6 +63,62 @@ export class UrlController {
     return plainToInstance(UrlResponseDto, url, {
       excludeExtraneousValues: true,
     });
+  }
+
+  /* 
+  Bulk create short URLs
+  */
+  @Post('api/urls/bulk')
+  @RateLimit({ ttl: 300, max: 5 }) // max 5 bulk operations per 5 minutes
+  @HttpCode(HttpStatus.CREATED)
+  async bulkCreateShortUrls(
+    @Body() bulkcreateDto: BulkCreateUrlDto,
+    @Req() req: Request,
+  ): Promise<{ urls: UrlResponseDto[]; created: number; skipped: number }> {
+    const userId = req.headers['x-user-id'] as string;
+
+    const urls = await this.urlService.bulkCreateShortUrls(
+      bulkcreateDto.urls,
+      userId,
+    );
+
+    const urlDtos = urls.map((url) =>
+      plainToInstance(UrlResponseDto, url, {
+        excludeExtraneousValues: true,
+      }),
+    );
+
+    return {
+      urls: urlDtos,
+      created: urls.length,
+      skipped: bulkcreateDto.urls.length - urls.length,
+    };
+  }
+
+  /* 
+  Get URL preview/metadata
+  */
+  @Post('api/urls/preview')
+  @RateLimit({ ttl: 60, max: 10 })
+  async getUrlPreview(@Body('url') url: string): Promise<{
+    url: string;
+    metadata: {
+      title: string | null;
+      description: string | null;
+      image: string | null;
+      siteName: string | null;
+    };
+  }> {
+    if (!url) {
+      throw new BadRequestException('URL is required');
+    }
+
+    const metadata = await this.urlPreviewService.fetchMetadata(url);
+
+    return {
+      url,
+      metadata,
+    };
   }
 
   /* 
@@ -174,9 +238,10 @@ export class UrlController {
   }
 
   /* 
-  Redirect short URL to original URL
+  Redirect short URL to original URL (strict rate limit)
   */
   @Get(':shortCode')
+  @RateLimit({ ttl: 60, max: 30 })
   async redirectToOriginal(
     @Param('shortCode') shortCode: string,
     @Query('password') password: string,
