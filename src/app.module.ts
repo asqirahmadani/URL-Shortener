@@ -15,6 +15,7 @@ import { CacheModule } from './common/cache/cache.module';
 import { UrlModule } from './modules/url/url.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { AppService } from './app.service';
     SchedulerModule,
     RateLimitModule,
     AdminModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
