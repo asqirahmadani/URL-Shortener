@@ -9,13 +9,18 @@ import {
 
 import { RateLimit } from '../rate-limit/decorators/rate-limit.decorator';
 import { RateLimitGuard } from '../rate-limit/guards/rate-limit.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { UserRole } from '../auth/entities/user.entity';
 import { AdminService } from './admin.service';
 
 /* 
 Admin Controller - admin dashboard endpoints
 */
 @Controller('api/admin')
-@UseGuards(RateLimitGuard)
+@UseGuards(RateLimitGuard, JwtAuthGuard, RolesGuard)
+@Roles(UserRole.ADMIN)
 @RateLimit({ ttl: 60, max: 30 })
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}

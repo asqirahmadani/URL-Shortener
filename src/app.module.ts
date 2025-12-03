@@ -1,6 +1,7 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bullmq';
+import { APP_GUARD } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 
 import { RateLimitModule } from './modules/rate-limit/rate-limit.module';
@@ -8,14 +9,15 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { SchedulerModule } from './modules/scheduler/scheduler.module';
 import { envValidationSchema } from './common/config/env.validation';
 import { getDatabaseConfig } from './common/config/database.config';
+import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { getRedisConfig } from './common/config/redis.config';
 import { QrcodeModule } from './modules/qrcode/qrcode.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { CacheModule } from './common/cache/cache.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { UrlModule } from './modules/url/url.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -56,6 +58,12 @@ import { AuthModule } from './modules/auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}
