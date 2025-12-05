@@ -36,7 +36,6 @@ import { UserRole } from '../auth/entities/user.entity';
 import { CreateUrlDto } from './dto/create-url.dto';
 import { UpdateUrlDto } from './dto/update-url.dto';
 import { UrlService } from './url.service';
-import { userInfo } from 'os';
 
 /*
  URL Controller - RESTful endpoints for URL Shortening
@@ -128,8 +127,15 @@ export class UrlController {
   Get URL details by ID
   */
   @Get('api/urls/:id')
-  async getUrlById(@Param('id') id: string): Promise<UrlResponseDto> {
+  async getUrlById(
+    @Param('id') id: string,
+    @CurrentUser() user: any,
+  ): Promise<UrlResponseDto> {
     const url = await this.urlService.getUrlById(id);
+
+    if (url.userId !== user.id && user.role !== UserRole.ADMIN) {
+      throw new UnauthorizedException('Not authorized to get URL');
+    }
 
     return plainToInstance(UrlResponseDto, url, {
       excludeExtraneousValues: true,
