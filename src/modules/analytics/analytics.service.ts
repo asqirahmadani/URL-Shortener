@@ -1,4 +1,9 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Repository } from 'typeorm';
@@ -14,6 +19,7 @@ import { ClickEventDto } from './dto/click-event.dto';
 import { GeoIpService } from './utils/geo-ip.service';
 import { Url } from '../url/entities/url.entity';
 import { Click } from './entities/click.entity';
+import { UserRole } from '../auth/entities/user.entity';
 
 /* 
 Analytics Service - Core logic for tracking & analytics
@@ -105,7 +111,10 @@ export class AnalyticsService {
   /* 
   Get analytics overview for specific URL
   */
-  async getAnalyticsOverview(shortCode: string): Promise<AnalyticsOverviewDto> {
+  async getAnalyticsOverview(
+    shortCode: string,
+    user: any,
+  ): Promise<AnalyticsOverviewDto> {
     const cacheKey = this.cacheService.analyticsOverviewKey(shortCode);
 
     // Cache-aside with wrap
@@ -118,6 +127,10 @@ export class AnalyticsService {
 
         if (!url) {
           throw new NotFoundException(`URL ${shortCode} tidak ditemukan!`);
+        }
+
+        if (url.userId !== user.id && user.role !== UserRole.ADMIN) {
+          throw new UnauthorizedException('Not authorized to get analytics');
         }
 
         // Aggregate queries
@@ -201,7 +214,20 @@ export class AnalyticsService {
     shortCode: string,
     interval: 'hour' | 'day' | 'week' | 'month',
     days: number = 30,
+    user: any,
   ): Promise<TimelineDataDto> {
+    const url = await this.urlRepository.findOne({
+      where: { shortCode },
+    });
+
+    if (!url) {
+      throw new NotFoundException(`URL ${shortCode} tidak ditemukan!`);
+    }
+
+    if (url.userId !== user.id && user.role !== UserRole.ADMIN) {
+      throw new UnauthorizedException('Not authorized to get timeline');
+    }
+
     const cacheKey = this.cacheService.analyticsTimelineKey(
       shortCode,
       interval,
@@ -266,7 +292,22 @@ export class AnalyticsService {
   /* 
   Get location statistics
   */
-  async getLocationStats(shortCode: string): Promise<LocationStatsDto> {
+  async getLocationStats(
+    shortCode: string,
+    user: any,
+  ): Promise<LocationStatsDto> {
+    const url = await this.urlRepository.findOne({
+      where: { shortCode },
+    });
+
+    if (!url) {
+      throw new NotFoundException(`URL ${shortCode} tidak ditemukan!`);
+    }
+
+    if (url.userId !== user.id && user.role !== UserRole.ADMIN) {
+      throw new UnauthorizedException('Not authorized to get timeline');
+    }
+
     const cacheKey = this.cacheService.analyticsLocationsKey(shortCode);
 
     return this.cacheService.wrap(
@@ -338,7 +379,19 @@ export class AnalyticsService {
   /* 
   Get device statistics
   */
-  async getDeviceStats(shortCode: string): Promise<DeviceStatsDto> {
+  async getDeviceStats(shortCode: string, user: any): Promise<DeviceStatsDto> {
+    const url = await this.urlRepository.findOne({
+      where: { shortCode },
+    });
+
+    if (!url) {
+      throw new NotFoundException(`URL ${shortCode} tidak ditemukan!`);
+    }
+
+    if (url.userId !== user.id && user.role !== UserRole.ADMIN) {
+      throw new UnauthorizedException('Not authorized to get timeline');
+    }
+
     const cacheKey = this.cacheService.analyticsDevicesKey(shortCode);
 
     return this.cacheService.wrap(
@@ -433,7 +486,20 @@ export class AnalyticsService {
   */
   async getReferrerStats(
     shortCode: string,
+    user: any,
   ): Promise<Array<{ referer: string; clicks: number }>> {
+    const url = await this.urlRepository.findOne({
+      where: { shortCode },
+    });
+
+    if (!url) {
+      throw new NotFoundException(`URL ${shortCode} tidak ditemukan!`);
+    }
+
+    if (url.userId !== user.id && user.role !== UserRole.ADMIN) {
+      throw new UnauthorizedException('Not authorized to get timeline');
+    }
+
     const cacheKey = this.cacheService.analyticsReferrersKey(shortCode);
 
     return this.cacheService.wrap(
@@ -473,6 +539,7 @@ export class AnalyticsService {
   async getHeatmapData(
     shortCode: string,
     days: number = 7,
+    user: any,
   ): Promise<
     Array<{
       hour: number;
@@ -486,7 +553,11 @@ export class AnalyticsService {
     });
 
     if (!url) {
-      throw new NotFoundException(`URL ${shortCode} tidak ditemukan`);
+      throw new NotFoundException(`URL ${shortCode} tidak ditemukan!`);
+    }
+
+    if (url.userId !== user.id && user.role !== UserRole.ADMIN) {
+      throw new UnauthorizedException('Not authorized to get timeline');
     }
 
     const startDate = new Date();
@@ -517,13 +588,17 @@ export class AnalyticsService {
   /* 
   Export analytics data as CSV
   */
-  async exportAnalytics(shortCode: string): Promise<string> {
+  async exportAnalytics(shortCode: string, user: any): Promise<string> {
     const url = await this.urlRepository.findOne({
       where: { shortCode },
     });
 
     if (!url) {
-      throw new NotFoundException(`URL ${shortCode} tidak ditemukan`);
+      throw new NotFoundException(`URL ${shortCode} tidak ditemukan!`);
+    }
+
+    if (url.userId !== user.id && user.role !== UserRole.ADMIN) {
+      throw new UnauthorizedException('Not authorized to get timeline');
     }
 
     const clicks = await this.clickRepository.find({

@@ -40,40 +40,40 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s \
 
 # Start application
 CMD ["node", "dist/main"]
-```
+# ```
 
-### `.gitignore`
-```
-# Dependencies
-node_modules/
-package-lock.json
+# ### `.gitignore`
+# ```
+# # Dependencies
+# node_modules/
+# package-lock.json
 
-# Environment
-.env
-.env.local
-.env.*.local
+# # Environment
+# .env
+# .env.local
+# .env.*.local
 
-# Build
-dist/
-build/
+# # Build
+# dist/
+# build/
 
-# Logs
-logs/
-*.log
-npm-debug.log*
+# # Logs
+# logs/
+# *.log
+# npm-debug.log*
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
+# # IDE
+# .vscode/
+# .idea/
+# *.swp
+# *.swo
 
-# OS
-.DS_Store
-Thumbs.db
+# # OS
+# .DS_Store
+# Thumbs.db
 
-# Testing
-coverage/
+# # Testing
+# coverage/
 
-# Docker
-docker-compose.override.yml
+# # Docker
+# docker-compose.override.yml

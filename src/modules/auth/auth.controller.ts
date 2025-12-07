@@ -8,6 +8,12 @@ import {
   HttpStatus,
   Patch,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 
 import { CurrentUser } from './decorators/current-user.decorator';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
@@ -21,6 +27,7 @@ import { LoginDto } from './dto/login.dto';
 /* 
 Auth Controller - authentication endpoints
 */
+@ApiTags('auth')
 @Controller('api/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -28,6 +35,9 @@ export class AuthController {
   /* 
   Register new user
   */
+  @ApiOperation({ summary: 'Register new user' })
+  @ApiResponse({ status: 201, description: 'User registered successfully' })
+  @ApiResponse({ status: 409, description: 'Email already registered' })
   @Public()
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
@@ -49,6 +59,9 @@ export class AuthController {
   /* 
   Login user
   */
+  @ApiOperation({ summary: 'Login' })
+  @ApiResponse({ status: 201, description: 'User registered successfully' })
+  @ApiResponse({ status: 401, description: 'Email or password is wrong' })
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
@@ -70,6 +83,9 @@ export class AuthController {
   /* 
   Refresh access token
   */
+  @ApiOperation({ summary: 'Refresh token' })
+  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 401, description: 'Invalid refresh token' })
   @Public()
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
@@ -84,6 +100,10 @@ export class AuthController {
   /* 
   Logout user
   */
+  @ApiOperation({ summary: 'Logout' })
+  @ApiResponse({ status: 204 })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('logout')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -94,6 +114,10 @@ export class AuthController {
   /* 
   Get current user profile
   */
+  @ApiOperation({ summary: 'Get current user profile' })
+  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async getProfile(@CurrentUser() user: any) {

@@ -433,7 +433,7 @@ export class UrlService {
           expirationDate = new Date(expiresAt);
           if (expirationDate < new Date()) {
             this.logger.warn(
-              `Skipping URL wuth past expiration: ${originalUrl}`,
+              `Skipping URL with past expiration: ${originalUrl}`,
             );
             continue;
           }

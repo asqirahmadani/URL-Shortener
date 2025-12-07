@@ -9,6 +9,12 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import type { Response } from 'express';
+import {
+  ApiTags,
+  ApiResponse,
+  ApiOperation,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 
 import { QrCodeService } from './qrcode.service';
 
@@ -22,6 +28,9 @@ export class QrCodeController {
   /* 
   Get QR Code as PNG image
   */
+  @ApiOperation({ summary: 'Get QR Code as PNG' })
+  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 400, description: 'Bad request' })
   @Get(':shortCode.png')
   @Header('Content-Type', 'image/png')
   @Header('Cache-Control', 'public, max-age=86400')
@@ -53,6 +62,9 @@ export class QrCodeController {
   /* 
   GET QR Code as SVG
   */
+  @ApiOperation({ summary: 'Get QR Code as SVG' })
+  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 400, description: 'Bad request' })
   @Get(':shortCode.svg')
   @Header('Content-Type', 'image/svg+xml')
   @Header('Cache-Control', 'public, max-age=86400')
@@ -74,6 +86,9 @@ export class QrCodeController {
   /* 
   GET QR Code as URL data (JSON response)
   */
+  @ApiOperation({ summary: 'Get QR Code as URL data (JSON)' })
+  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 400, description: 'Bad request' })
   @Get(':shortCode')
   async getDataURL(
     @Param('shortCode') shortCode: string,

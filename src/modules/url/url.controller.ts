@@ -16,6 +16,12 @@ import {
   BadRequestException,
   UnauthorizedException,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import type { Request, Response } from 'express';
 
@@ -40,6 +46,7 @@ import { UrlService } from './url.service';
 /*
  URL Controller - RESTful endpoints for URL Shortening
  */
+@ApiTags('url')
 @Controller()
 @UseGuards(RateLimitGuard, JwtAuthGuard, RolesGuard)
 export class UrlController {
@@ -54,6 +61,11 @@ export class UrlController {
   /* 
   Create short URL (strict rate limit)
   */
+  @ApiOperation({ summary: 'Create short URL' })
+  @ApiResponse({ status: 201, description: 'URL created successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid expiration date' })
+  @ApiResponse({ status: 409, description: 'Custom alias already used' })
+  @ApiBearerAuth()
   @Post('/api/urls')
   @RateLimit({ ttl: 60, max: 5 })
   @HttpCode(HttpStatus.CREATED)
@@ -72,6 +84,10 @@ export class UrlController {
   /* 
   Bulk create short URLs
   */
+  @ApiOperation({ summary: 'Bulk create short URLs' })
+  @ApiResponse({ status: 201, description: 'URLs created successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid URL' })
+  @ApiBearerAuth()
   @Post('api/urls/bulk')
   @RateLimit({ ttl: 300, max: 5 }) // max 5 bulk operations per 5 minutes
   @HttpCode(HttpStatus.CREATED)
@@ -100,6 +116,9 @@ export class UrlController {
   /* 
   Get URL preview/metadata
   */
+  @ApiOperation({ summary: 'Get URL preview' })
+  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 400, description: 'URL is required' })
   @Post('api/urls/preview')
   @RateLimit({ ttl: 60, max: 10 })
   async getUrlPreview(@Body('url') url: string): Promise<{
@@ -126,6 +145,11 @@ export class UrlController {
   /* 
   Get URL details by ID
   */
+  @ApiOperation({ summary: 'Get URL details by ID' })
+  @ApiResponse({ status: 200, description: 'Fetch URL successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'URL not found' })
+  @ApiBearerAuth()
   @Get('api/urls/:id')
   async getUrlById(
     @Param('id') id: string,
@@ -145,6 +169,10 @@ export class UrlController {
   /* 
   List all URLs with pagination
   */
+  @ApiOperation({ summary: 'List all URLs with pagination' })
+  @ApiResponse({ status: 200, description: 'Fetch URLs successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiBearerAuth()
   @Get('api/urls-admin')
   async getAllUrls(
     @Query('page') page: string = '1',
@@ -184,6 +212,9 @@ export class UrlController {
   /* 
   List user's URLs with pagination
   */
+  @ApiOperation({ summary: "List user's URLs with pagination" })
+  @ApiResponse({ status: 200, description: 'Fetch URLs successfully' })
+  @ApiBearerAuth()
   @Get('api/urls')
   async getUserUrls(
     @Query('page') page: string = '1',
@@ -217,6 +248,11 @@ export class UrlController {
   /* 
   Update URL
   */
+  @ApiOperation({ summary: 'Update URL' })
+  @ApiResponse({ status: 200, description: 'URL updated successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'URL not found' })
+  @ApiBearerAuth()
   @Put('api/urls/:id')
   async updateURL(
     @Param('id') id: string,
@@ -241,6 +277,11 @@ export class UrlController {
   /* 
   Delete URL (soft delete)
   */
+  @ApiOperation({ summary: 'Delete URL' })
+  @ApiResponse({ status: 204 })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'URL not found' })
+  @ApiBearerAuth()
   @Delete('api/urls/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteUrl(
@@ -261,6 +302,11 @@ export class UrlController {
   /* 
   Redirect short URL to original URL (strict rate limit)
   */
+  @ApiOperation({ summary: 'Redirect short URL to original URL' })
+  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'URL not found' })
   @Public()
   @Get(':shortCode')
   @RateLimit({ ttl: 60, max: 30 })
@@ -310,9 +356,12 @@ export class UrlController {
       });
     }
   }
+
   /* 
-    Health check endpoint for monitoring
-    */
+  Health check endpoint for monitoring
+  */
+  @ApiOperation({ summary: 'Public health check' })
+  @ApiResponse({ status: 200 })
   @Public()
   @Get('api/health')
   async healthCheck(): Promise<{ status: string; timestamp: string }> {

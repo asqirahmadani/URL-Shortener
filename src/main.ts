@@ -1,3 +1,4 @@
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
@@ -71,6 +72,31 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key'],
   });
+
+  // swagger documentation
+  if (nodeEnv !== 'production') {
+    const config = new DocumentBuilder()
+      .setTitle('URL Shortener API')
+      .setDescription('Comprehensive URL shortening service with analytics')
+      .setVersion('1.0')
+      .addBearerAuth()
+      .addApiKey({ type: 'apiKey', name: 'X-API-Key', in: 'header' }, 'api-key')
+      .addTag('auth', 'Authentication endpoints')
+      .addTag('urls', 'URL shortening endpoints')
+      .addTag('analytics', 'Analytics and statistics')
+      .addTag('qrcode', 'QR code generation')
+      .addTag('admin', 'Admin dashboard')
+      .build();
+
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api/docs', app, document, {
+      swaggerOptions: {
+        persistAuthorization: true,
+      },
+    });
+
+    logger.log(`📚 API Documentation: http://localhost:${port}/api/docs`);
+  }
 
   await app.listen(port);
 
