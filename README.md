@@ -658,10 +658,10 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 **Your Name**
 
-- Portfolio: [your-portfolio.com](https://asqi-code-architect.lovable.app/)
-- LinkedIn: [linkedin.com/in/yourprofile](https://www.linkedin.com/in/muhamad-asqi-rahmadani/)
+- Portfolio: [asqi-code-architect.lovable.app](https://asqi-code-architect.lovable.app/)
+- LinkedIn: [linkedin.com/in/muhamad-asqi-rahmadani](https://www.linkedin.com/in/muhamad-asqi-rahmadani/)
 - Email: rahmadaniasqi@gmail.com
-- GitHub: [@yourusername](https://github.com/asqirahmadani)
+- GitHub: [@asqirahmadani](https://github.com/asqirahmadani)
 
 ---
 
