@@ -285,4 +285,33 @@ describe('UrlService', () => {
       expect(mockCacheService.del).toHaveBeenCalled();
     });
   });
+
+  describe('incrementClickCount', () => {
+    it('should increment click count and invalidate cache', async () => {
+      const url = { id: 'uuid', shortCode: 'abc123' };
+
+      mockRepository.increment.mockResolvedValue({});
+      mockRepository.findOne.mockResolvedValue(url);
+
+      await service.incrementClickCount('uuid');
+
+      expect(mockRepository.increment).toHaveBeenCalledWith(
+        { id: 'uuid' },
+        'clickCount',
+        1,
+      );
+      expect(mockCacheService.del).toHaveBeenCalled();
+    });
+  });
+
+  describe('cleanupExpiredUrls', () => {
+    it('should delete expired URLs', async () => {
+      const mockQueryBuilder = mockRepository.createQueryBuilder();
+
+      const result = await service.cleanUpExpiredUrls();
+
+      expect(mockQueryBuilder.softDelete).toHaveBeenCalled();
+      expect(result).toBe(1);
+    });
+  });
 });
