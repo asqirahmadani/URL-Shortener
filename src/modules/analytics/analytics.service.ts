@@ -10,16 +10,16 @@ import { Repository } from 'typeorm';
 import { Queue } from 'bullmq';
 
 import { AnalyticsOverviewDto } from './dto/analytics-overview.dto';
-import { CacheService } from 'src/common/cache/cache.service';
+import { CacheService } from '../../common/cache/cache.service';
 import { UserAgentParser } from './utils/user-agent.parser';
 import { LocationStatsDto } from './dto/location-stats.dto';
 import { TimelineDataDto } from './dto/timeline-data.dto';
 import { DeviceStatsDto } from './dto/device-stats.dto';
+import { UserRole } from '../auth/entities/user.entity';
 import { ClickEventDto } from './dto/click-event.dto';
 import { GeoIpService } from './utils/geo-ip.service';
 import { Url } from '../url/entities/url.entity';
 import { Click } from './entities/click.entity';
-import { UserRole } from '../auth/entities/user.entity';
 
 /* 
 Analytics Service - Core logic for tracking & analytics

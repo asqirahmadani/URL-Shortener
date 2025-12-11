@@ -53,6 +53,9 @@ describe('AnalyticsService', () => {
       (code, interval, days) =>
         `analytics:timeline:${code}:${interval}:${days}`,
     ),
+    analyticsLocationsKey: jest.fn((code) => `analytics:locations:${code}`),
+    analyticsDevicesKey: jest.fn((code) => `analytics:devices:${code}`),
+    analyticsReferrersKey: jest.fn((code) => `analytics:referrers:${code}`),
     getTTL: jest.fn(() => 600),
     invalidateAnalyticsCache: jest.fn(),
   };

@@ -260,12 +260,10 @@ describe('AuthService', () => {
     });
 
     it('should throw UnauthorizedException if user inactive', async () => {
-      const mockUser = {
-        id: 'uuid',
-        isActive: false,
-      };
-
-      mockUserRepository.findOne.mockResolvedValue(mockUser);
+      // In the real implementation, `findOne({ where: { id, isActive: true } })`
+      // will return null if the user has isActive: false.
+      // So we must mock that behavior here.
+      mockUserRepository.findOne.mockResolvedValue(null);
 
       await expect(service.validateUser('uuid')).rejects.toThrow(
         UnauthorizedException,

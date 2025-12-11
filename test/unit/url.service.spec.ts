@@ -17,6 +17,14 @@ describe('UrlService', () => {
   let repository: Repository<Url>;
   let cacheService: CacheService;
 
+  const mockQueryBuilder = {
+    where: jest.fn().mockReturnThis(),
+    andWhere: jest.fn().mockReturnThis(),
+    softDelete: jest.fn().mockReturnThis(),
+    execute: jest.fn().mockResolvedValue({ affected: 1 }),
+    getMany: jest.fn().mockResolvedValue([]),
+  };
+
   const mockRepository = {
     findOne: jest.fn(),
     find: jest.fn(),
@@ -25,7 +33,7 @@ describe('UrlService', () => {
     update: jest.fn(),
     softRemove: jest.fn(),
     increment: jest.fn(),
-    createQueryBuilder: jest.fn(),
+    createQueryBuilder: jest.fn(() => mockQueryBuilder),
     manager: {
       transaction: jest.fn(),
     },
@@ -306,11 +314,19 @@ describe('UrlService', () => {
 
   describe('cleanupExpiredUrls', () => {
     it('should delete expired URLs', async () => {
-      const mockQueryBuilder = mockRepository.createQueryBuilder();
-
       const result = await service.cleanUpExpiredUrls();
 
+      expect(mockRepository.createQueryBuilder).toHaveBeenCalled();
       expect(mockQueryBuilder.softDelete).toHaveBeenCalled();
+      expect(mockQueryBuilder.where).toHaveBeenCalledWith(
+        'expiresAt < :now',
+        expect.any(Object),
+      );
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'isActive = :isActive',
+        { isActive: true },
+      );
+      expect(mockQueryBuilder.execute).toHaveBeenCalled();
       expect(result).toBe(1);
     });
   });

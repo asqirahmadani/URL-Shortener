@@ -15,5 +15,5 @@ export default new DataSource({
   migrations: ['migrations/*.ts'],
 
   synchronize: false,
-  logging: true,
+  logging: false,
 });
