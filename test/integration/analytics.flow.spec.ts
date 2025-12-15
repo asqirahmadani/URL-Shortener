@@ -80,7 +80,12 @@ describe('Analytics Flow (Integration)', () => {
   });
 
   afterAll(async () => {
-    await app.close();
+    if (app) {
+      await app.close();
+    }
+    if (module) {
+      await module.close();
+    }
   });
 
   beforeEach(async () => {
