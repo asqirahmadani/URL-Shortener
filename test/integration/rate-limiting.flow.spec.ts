@@ -1,8 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule } from '@nestjs/config';
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 
 import { RateLimitService } from '../../src/modules/rate-limit/rate-limit.service';
+import { RateLimitModule } from '../../src/modules/rate-limit/rate-limit.module';
+import { CacheModule } from '../../src/common/cache/cache.module';
+
+dotenv.config({ path: path.resolve(__dirname, '../../.env.test') });
 
 describe('Rate Limiting (Integration)', () => {
   let rateLimitService: RateLimitService;
@@ -15,12 +20,9 @@ describe('Rate Limiting (Integration)', () => {
           isGlobal: true,
           envFilePath: '.env.test',
         }),
-        CacheModule.register({
-          isGlobal: true,
-          ttl: 60,
-        }),
+        CacheModule,
+        RateLimitModule,
       ],
-      providers: [RateLimitService],
     }).compile();
 
     rateLimitService = module.get<RateLimitService>(RateLimitService);
@@ -33,10 +35,11 @@ describe('Rate Limiting (Integration)', () => {
   describe('Rate Limit Enforcement', () => {
     it('should allow requests within limit', async () => {
       const ip = `test-ip-${Date.now()}`;
+      const customLimit = { ttl: 60, max: 10 };
 
       // First 10 requests should pass
       for (let i = 0; i < 10; i++) {
-        const result = await rateLimitService.checkRateLimit(ip);
+        const result = await rateLimitService.checkRateLimit(ip, customLimit);
         expect(result.allowed).toBe(true);
         expect(result.remaining).toBe(10 - i - 1);
       }
@@ -44,14 +47,15 @@ describe('Rate Limiting (Integration)', () => {
 
     it('should block requests exceeding limit', async () => {
       const ip = `test-ip-${Date.now()}`;
+      const customLimit = { ttl: 60, max: 10 };
 
       // Make 10 allowed requests
       for (let i = 0; i < 10; i++) {
-        await rateLimitService.checkRateLimit(ip);
+        await rateLimitService.checkRateLimit(ip, customLimit);
       }
 
       // 11th request should be blocked
-      const result = await rateLimitService.checkRateLimit(ip);
+      const result = await rateLimitService.checkRateLimit(ip, customLimit);
       expect(result.allowed).toBe(false);
       expect(result.remaining).toBe(0);
     });
@@ -80,18 +84,19 @@ describe('Rate Limiting (Integration)', () => {
     it('should handle different IPs independently', async () => {
       const ip1 = `test-ip-1-${Date.now()}`;
       const ip2 = `test-ip-2-${Date.now()}`;
+      const customLimit = { ttl: 60, max: 10 };
 
       // Use up limit for IP1
       for (let i = 0; i < 10; i++) {
-        await rateLimitService.checkRateLimit(ip1);
+        await rateLimitService.checkRateLimit(ip1, customLimit);
       }
 
       // IP1 should be blocked
-      const result1 = await rateLimitService.checkRateLimit(ip1);
+      const result1 = await rateLimitService.checkRateLimit(ip1, customLimit);
       expect(result1.allowed).toBe(false);
 
       // IP2 should still be allowed
-      const result2 = await rateLimitService.checkRateLimit(ip2);
+      const result2 = await rateLimitService.checkRateLimit(ip2, customLimit);
       expect(result2.allowed).toBe(true);
     });
   });
@@ -99,21 +104,22 @@ describe('Rate Limiting (Integration)', () => {
   describe('Rate Limit Reset', () => {
     it('should reset rate limit for specific IP', async () => {
       const ip = `test-ip-${Date.now()}`;
+      const customLimit = { ttl: 60, max: 10 };
 
       // Use up limit
       for (let i = 0; i < 10; i++) {
-        await rateLimitService.checkRateLimit(ip);
+        await rateLimitService.checkRateLimit(ip, customLimit);
       }
 
       // Should be blocked
-      let result = await rateLimitService.checkRateLimit(ip);
+      let result = await rateLimitService.checkRateLimit(ip, customLimit);
       expect(result.allowed).toBe(false);
 
       // Reset limit
       await rateLimitService.resetRateLimit(ip);
 
       // Should be allowed again
-      result = await rateLimitService.checkRateLimit(ip);
+      result = await rateLimitService.checkRateLimit(ip, customLimit);
       expect(result.allowed).toBe(true);
     });
   });

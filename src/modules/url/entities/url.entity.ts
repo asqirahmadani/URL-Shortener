@@ -14,7 +14,7 @@ export class Url extends BaseEntity {
   @Column({ type: 'text' })
   originalUrl: string;
 
-  @Column({ type: 'varchar', length: 10, unique: true })
+  @Column({ type: 'varchar', length: 50, unique: true })
   shortCode: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })

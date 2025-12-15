@@ -22,10 +22,7 @@ export class UrlService {
   private readonly logger = new Logger(UrlService.name);
   private readonly shortCodeLength: number;
   private readonly baseUrl: string;
-  private readonly nanoid = customAlphabet(
-    'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789',
-    6,
-  );
+  private nanoid: (size?: number) => string;
 
   constructor(
     @InjectRepository(Url)
@@ -41,13 +38,17 @@ export class UrlService {
       'BASE_URL',
       'http://localhost:3000',
     );
+    this.nanoid = customAlphabet(
+      'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789',
+      6,
+    );
   }
 
   private async generateUniqueShortCode(): Promise<string> {
     const maxRetries = 5;
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
-      const shortCode = this.nanoid(this.shortCodeLength);
+      const shortCode = this.nanoid();
 
       const existing = await this.urlRepository.findOne({
         where: { shortCode },

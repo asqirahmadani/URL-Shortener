@@ -195,9 +195,9 @@ export class AnalyticsService {
         return {
           totalClicks,
           uniqueVisitors: parseInt(uniqueVisitors.count || '0'),
-          topCountry: topCountry.click_country || 'Unknown',
-          topDevice: topDevice.click_deviceType || 'Unknown',
-          topBrowser: topBrowser.click_browser || 'Unknown',
+          topCountry: topCountry?.click_country || 'Unknown',
+          topDevice: topDevice?.click_deviceType || 'Unknown',
+          topBrowser: topBrowser?.click_browser || 'Unknown',
           averageClicksPerDay: Math.round(averageClicksPerDay * 100) / 100,
           lastClickAt: lastClick?.createdAt || null,
           createdAt: url.createdAt,

@@ -1,18 +1,25 @@
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { CacheModule } from '@nestjs/cache-manager';
 import { INestApplication } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
 import { BullModule } from '@nestjs/bullmq';
 import { Repository } from 'typeorm';
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 
 import { AnalyticsService } from '../../src/modules/analytics/analytics.service';
+import { RateLimitModule } from '../../src/modules/rate-limit/rate-limit.module';
 import { AnalyticsModule } from '../../src/modules/analytics/analytics.module';
 import { Click } from '../../src/modules/analytics/entities/click.entity';
+import { ApiKey } from '../../src/modules/auth/entities/api-key.entity';
+import { User } from '../../src/modules/auth/entities/user.entity';
+import { CacheModule } from '../../src/common/cache/cache.module';
 import { Url } from '../../src/modules/url/entities/url.entity';
 import { UrlService } from '../../src/modules/url/url.service';
 import { UrlModule } from '../../src/modules/url/url.module';
+
+dotenv.config({ path: path.resolve(__dirname, '../../.env.test') });
 
 describe('Analytics Flow (Integration)', () => {
   let app: INestApplication;
@@ -29,29 +36,37 @@ describe('Analytics Flow (Integration)', () => {
           isGlobal: true,
           envFilePath: '.env.test',
         }),
-        TypeOrmModule.forRoot({
-          type: 'postgres',
-          host: process.env.DB_HOST || 'localhost',
-          port: parseInt(process.env.DB_PORT!) || 5432,
-          username: process.env.DB_USERNAME || 'test',
-          password: process.env.DB_PASSWORD || 'test',
-          database: process.env.DB_DATABASE || 'test_db',
-          entities: [Url, Click],
-          synchronize: true,
-          dropSchema: true,
+        TypeOrmModule.forRootAsync({
+          imports: [ConfigModule],
+          inject: [ConfigService],
+          useFactory: (configService: ConfigService) => ({
+            type: 'postgres',
+            host: configService.get<string>('DB_HOST', 'localhost'),
+            port: configService.get<number>('DB_PORT', 5433),
+            username: configService.get<string>('DB_USERNAME', 'test'),
+            password: configService.get<string>('DB_PASSWORD', 'test'),
+            database: configService.get<string>('DB_DATABASE', 'test_db'),
+            entities: [Url, Click, User, ApiKey],
+            synchronize: true,
+            dropSchema: true,
+          }),
         }),
-        BullModule.forRoot({
-          connection: {
-            host: process.env.REDIS_HOST || 'localhost',
-            port: parseInt(process.env.REDIS_PORT!) || 6379,
-          },
+        BullModule.forRootAsync({
+          imports: [ConfigModule],
+          inject: [ConfigService],
+          useFactory: (configService: ConfigService) => ({
+            connection: {
+              host: configService.get<string>('REDIS_HOST', 'localhost'),
+              port: configService.get<number>('REDIS_PORT', 6380),
+              password: configService.get<string>('REDIS_PASSWORD'),
+              maxRetriesPerRequest: null,
+            },
+          }),
         }),
-        CacheModule.register({
-          isGlobal: true,
-          ttl: 5,
-        }),
+        CacheModule,
         UrlModule,
         AnalyticsModule,
+        RateLimitModule,
       ],
     }).compile();
 

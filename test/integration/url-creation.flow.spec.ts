@@ -1,15 +1,24 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { CacheModule } from '@nestjs/cache-manager';
 import { INestApplication } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BullModule } from '@nestjs/bullmq';
 import { Repository } from 'typeorm';
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 
+import { RateLimitModule } from '../../src/modules/rate-limit/rate-limit.module';
+import { Click } from '../../src/modules/analytics/entities/click.entity';
+import { ApiKey } from '../../src/modules/auth/entities/api-key.entity';
 import { CacheService } from '../../src/common/cache/cache.service';
+import { User } from '../../src/modules/auth/entities/user.entity';
+import { CacheModule } from '../../src/common/cache/cache.module';
 import { Url } from '../../src/modules/url/entities/url.entity';
 import { UrlService } from '../../src/modules/url/url.service';
 import { UrlModule } from '../../src/modules/url/url.module';
+
+dotenv.config({ path: path.resolve(__dirname, '../../.env.test') });
 
 describe('URL Creation Flow (Integration)', () => {
   let app: INestApplication;
@@ -25,22 +34,38 @@ describe('URL Creation Flow (Integration)', () => {
           isGlobal: true,
           envFilePath: '.env.test',
         }),
-        TypeOrmModule.forRoot({
-          type: 'postgres',
-          host: process.env.DB_HOST || 'localhost',
-          port: parseInt(process.env.DB_PORT!) || 5432,
-          username: process.env.DB_USERNAME || 'test',
-          password: process.env.DB_PASSWORD || 'test',
-          database: process.env.DB_DATABASE || 'test_db',
-          entities: [Url],
-          synchronize: true,
-          dropSchema: true,
+        TypeOrmModule.forRootAsync({
+          imports: [ConfigModule],
+          inject: [ConfigService],
+          useFactory: (configService: ConfigService) => ({
+            type: 'postgres',
+            host: configService.get<string>('DB_HOST', 'localhost'),
+            port: configService.get<number>('DB_PORT', 5433),
+            username: configService.get<string>('DB_USERNAME', 'test'),
+            password: configService.get<string>('DB_PASSWORD', 'test'),
+            database: configService.get<string>('DB_DATABASE', 'test_db'),
+            entities: [Url, User, ApiKey, Click],
+            synchronize: true,
+            dropSchema: true,
+            logging: false,
+          }),
         }),
-        CacheModule.register({
-          isGlobal: true,
-          ttl: 5,
+        BullModule.forRootAsync({
+          imports: [ConfigModule],
+          inject: [ConfigService],
+          useFactory: (configService: ConfigService) => ({
+            connection: {
+              host: configService.get<string>('REDIS_HOST', 'localhost'),
+              port: configService.get<number>('REDIS_PORT', 6380),
+              password: configService.get<string>('REDIS_PASSWORD'),
+              maxRetriesPerRequest: null,
+              lazyConnect: true, // lazy connect for test
+            },
+          }),
         }),
+        CacheModule,
         UrlModule,
+        RateLimitModule,
       ],
     }).compile();
 
@@ -50,15 +75,37 @@ describe('URL Creation Flow (Integration)', () => {
     urlService = module.get<UrlService>(UrlService);
     urlRepository = module.get(getRepositoryToken(Url));
     cacheService = module.get<CacheService>(CacheService);
-  });
+  }, 30000);
 
   afterAll(async () => {
-    await app.close();
-  });
+    if (cacheService) {
+      await cacheService.reset();
+    }
+    if (app) {
+      await app.close();
+    }
+    if (module) {
+      await module.close();
+    }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }, 10000);
 
   beforeEach(async () => {
     // Clean database before each test
-    await urlRepository.query('TRUNCATE "urls" CASCADE');
+    try {
+      await urlRepository.query('SELECT 1');
+      await urlRepository.query('DELETE FROM "urls"');
+      if (cacheService) {
+        await cacheService.reset();
+      }
+    } catch (error) {
+      console.error('Setup error:', error);
+    }
+  }, 10000);
+
+  afterEach(async () => {
+    jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   describe('Complete URL Creation Flow', () => {

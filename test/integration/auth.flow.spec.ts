@@ -1,14 +1,21 @@
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { INestApplication } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 
 import { User, UserRole } from '../../src/modules/auth/entities/user.entity';
+import { Click } from '../../src/modules/analytics/entities/click.entity';
+import { ApiKey } from '../../src/modules/auth/entities/api-key.entity';
 import { AuthService } from '../../src/modules/auth/auth.service';
+import { Url } from '../../src/modules/url/entities/url.entity';
 import { AuthModule } from '../../src/modules/auth/auth.module';
+
+dotenv.config({ path: path.resolve(__dirname, '../../.env.test') });
 
 describe('Authentication FLow (Integration)', () => {
   let app: INestApplication;
@@ -23,16 +30,20 @@ describe('Authentication FLow (Integration)', () => {
           isGlobal: true,
           envFilePath: '.env.test',
         }),
-        TypeOrmModule.forRoot({
-          type: 'postgres',
-          host: process.env.DB_HOST || 'localhost',
-          port: parseInt(process.env.DB_PORT!) || 5432,
-          username: process.env.DB_USERNAME || 'test',
-          password: process.env.DB_PASSWORD || 'test',
-          database: process.env.DB_DATABASE || 'test_db',
-          entities: [User],
-          synchronize: true,
-          dropSchema: true,
+        TypeOrmModule.forRootAsync({
+          imports: [ConfigModule],
+          inject: [ConfigService],
+          useFactory: (configService: ConfigService) => ({
+            type: 'postgres',
+            host: configService.get<string>('DB_HOST', 'localhost'),
+            port: configService.get<number>('DB_PORT', 5433),
+            username: configService.get<string>('DB_USERNAME', 'test'),
+            password: configService.get<string>('DB_PASSWORD', 'test'),
+            database: configService.get<string>('DB_DATABASE', 'test_db'),
+            entities: [User, ApiKey, Url, Click],
+            synchronize: true,
+            dropSchema: true,
+          }),
         }),
         JwtModule.register({
           secret: 'test-secret',
@@ -96,7 +107,7 @@ describe('Authentication FLow (Integration)', () => {
           name: 'User 2',
           password: 'Password456!',
         }),
-      ).rejects.toThrow('sudah terdaftar');
+      ).rejects.toThrow('Email already registered!');
 
       // Verify only one user exists
       const count = await userRepository.count({
@@ -138,7 +149,7 @@ describe('Authentication FLow (Integration)', () => {
           email: 'wrong@example.com',
           password: 'Password123!',
         }),
-      ).rejects.toThrow('Email atau password salah');
+      ).rejects.toThrow('Email or password is wrong!');
     });
 
     it('should reject invalid password', async () => {
@@ -147,7 +158,7 @@ describe('Authentication FLow (Integration)', () => {
           email: 'login@example.com',
           password: 'WrongPassword!',
         }),
-      ).rejects.toThrow('Email atau password salah');
+      ).rejects.toThrow('Email or password is wrong!');
     });
 
     it('should reject login for inactive user', async () => {
@@ -162,7 +173,7 @@ describe('Authentication FLow (Integration)', () => {
           email: 'login@example.com',
           password: 'Password123!',
         }),
-      ).rejects.toThrow('Akun tidak aktif');
+      ).rejects.toThrow('Account is inactive');
     });
   });
 
@@ -176,6 +187,9 @@ describe('Authentication FLow (Integration)', () => {
       });
 
       const { refreshToken } = registerResult;
+
+      // Add delay to ensure iat is different
+      await new Promise((resolve) => setTimeout(resolve, 1100));
 
       // Refresh tokens
       const refreshResult = await authService.refreshAccessToken(refreshToken);

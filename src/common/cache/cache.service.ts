@@ -44,7 +44,7 @@ export class CacheService {
         this.cacheMetrics.recordHit();
         this.logger.debug(`Cache HIT: ${key}`);
       } else {
-        this.cacheMetrics.recordMiss;
+        this.cacheMetrics.recordMiss();
         this.logger.debug(`Cache MISS: ${key}`);
       }
 
