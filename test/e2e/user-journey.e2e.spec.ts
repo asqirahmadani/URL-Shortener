@@ -191,10 +191,10 @@ describe('User Journey (e2e)', () => {
         TypeOrmModule.forRoot({
           type: 'postgres',
           host: process.env.DB_HOST || 'localhost',
-          port: parseInt(process.env.DB_PORT!) || 5432,
-          username: process.env.DB_USERNAME || 'test',
-          password: process.env.DB_PASSWORD || 'test',
-          database: process.env.DB_DATABASE || 'test_db',
+          port: parseInt(process.env.DB_PORT!) || 5433,
+          username: process.env.DB_USERNAME || 'test_user',
+          password: process.env.DB_PASSWORD || 'test_password',
+          database: process.env.DB_DATABASE || 'urlshortener_test_db',
           entities: [User, ApiKey, Url, Click],
           synchronize: true,
           dropSchema: true,
@@ -208,7 +208,7 @@ describe('User Journey (e2e)', () => {
         BullModule.forRoot({
           connection: {
             host: process.env.REDIS_HOST || 'localhost',
-            port: parseInt(process.env.REDIS_PORT!) || 6379,
+            port: parseInt(process.env.REDIS_PORT!) || 6380,
             password: process.env.REDIS_PASSWORD,
             maxRetriesPerRequest: null,
           },
