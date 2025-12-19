@@ -1,10 +1,31 @@
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { ValidationPipe } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { BullModule } from '@nestjs/bullmq';
+import * as dotenv from 'dotenv';
 import request from 'supertest';
+import * as path from 'path';
 
-import { AppModule } from '../../src/app.module';
+// import modules
+import { RateLimitModule } from '../../src/modules/rate-limit/rate-limit.module';
+import { AnalyticsModule } from '../../src/modules/analytics/analytics.module';
+import { SchedulerModule } from '../../src/modules/scheduler/scheduler.module';
+import { QrcodeModule } from '../../src/modules/qrcode/qrcode.module';
+import { AdminModule } from '../../src/modules/admin/admin.module';
+import { CacheModule } from '../../src/common/cache/cache.module';
+import { AuthModule } from '../../src/modules/auth/auth.module';
+import { UrlModule } from '../../src/modules/url/url.module';
+
+// import entities
+import { Click } from '../../src/modules/analytics/entities/click.entity';
+import { ApiKey } from '../../src/modules/auth/entities/api-key.entity';
+import { User } from '../../src/modules/auth/entities/user.entity';
+import { Url } from '../../src/modules/url/entities/url.entity';
 import { cleanDatabase } from './setup';
+
+dotenv.config({ path: path.resolve(__dirname, '../../.env.test') });
 
 describe('URL Management (E2E)', () => {
   let app: INestApplication;
@@ -13,7 +34,52 @@ describe('URL Management (E2E)', () => {
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [
+        ConfigModule.forRoot({
+          isGlobal: true,
+          envFilePath: '.env.test',
+          ignoreEnvFile: false,
+        }),
+
+        TypeOrmModule.forRootAsync({
+          inject: [ConfigService],
+          useFactory: (configService: ConfigService) => ({
+            type: 'postgres',
+            host: configService.get('DB_HOST', 'localhost'),
+            port: configService.get<number>('DB_PORT', 5433),
+            username: configService.get('DB_USERNAME', 'test_user'),
+            password: configService.get('DB_PASSWORD', 'test_password'),
+            database: configService.get('DB_DATABASE', 'urlshortener_test_db'),
+            entities: [Url, User, ApiKey, Click],
+            synchronize: true,
+            dropSchema: true,
+            logging: false,
+          }),
+        }),
+
+        BullModule.forRootAsync({
+          inject: [ConfigService],
+          useFactory: (configService: ConfigService) => ({
+            connection: {
+              host: configService.get('REDIS_HOST', 'localhost'),
+              port: configService.get<number>('REDIS_PORT', 6380),
+              password: configService.get('REDIS_PASSWORD'),
+              maxRetriesPerRequest: null,
+              lazyConnect: true,
+            },
+          }),
+        }),
+
+        //   import all module
+        CacheModule,
+        UrlModule,
+        AnalyticsModule,
+        QrcodeModule,
+        SchedulerModule,
+        RateLimitModule,
+        AdminModule,
+        AuthModule,
+      ],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -23,6 +89,9 @@ describe('URL Management (E2E)', () => {
         whitelist: true,
         forbidNonWhitelisted: true,
         transform: true,
+        transformOptions: {
+          enableImplicitConversion: true,
+        },
       }),
     );
 
