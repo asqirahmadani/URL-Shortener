@@ -58,7 +58,7 @@ export class RateLimitService {
 
       // increment count
       const newCount = current + 1;
-      await this.cacheManager.set(key, newCount, ttl);
+      await this.cacheManager.set(key, newCount, ttl * 1000);
 
       const ttlRemaining = await this.getTTL(key);
       const resetAt = new Date(Date.now() + ttlRemaining * 1000);

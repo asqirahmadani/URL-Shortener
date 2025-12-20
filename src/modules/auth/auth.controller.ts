@@ -15,6 +15,8 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 
+import { RateLimit } from '../rate-limit/decorators/rate-limit.decorator';
+import { RateLimitGuard } from '../rate-limit/guards/rate-limit.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -28,6 +30,7 @@ import { LoginDto } from './dto/login.dto';
 Auth Controller - authentication endpoints
 */
 @ApiTags('auth')
+@UseGuards(RateLimitGuard)
 @Controller('api/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -64,6 +67,7 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Email or password is wrong' })
   @Public()
   @Post('login')
+  @RateLimit({ ttl: 60, max: 5 })
   @HttpCode(HttpStatus.OK)
   async login(@Body() loginDto: LoginDto) {
     const result = await this.authService.login(loginDto);

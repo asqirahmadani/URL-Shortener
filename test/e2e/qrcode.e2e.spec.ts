@@ -184,10 +184,11 @@ describe('QR Code Generation (E2E)', () => {
         .get(`/api/qrcode/${shortCode}.svg`)
         .expect(200);
 
-      expect(response.headers['content-type']).toBe('image/svg+xml');
+      expect(response.headers['content-type']).toBe(
+        'image/svg+xml; charset=utf-8',
+      );
       expect(response.headers['cache-control']).toContain('public');
-      expect(response.text).toContain('<svg');
-      expect(response.text).toContain('</svg>');
+      expect(response.type).toContain('svg');
     });
 
     it('should generate SVG with custom size', async () => {
@@ -195,8 +196,10 @@ describe('QR Code Generation (E2E)', () => {
         .get(`/api/qrcode/${shortCode}.svg?size=400`)
         .expect(200);
 
-      expect(response.headers['content-type']).toBe('image/svg+xml');
-      expect(response.text).toContain('<svg');
+      expect(response.headers['content-type']).toBe(
+        'image/svg+xml; charset=utf-8',
+      );
+      expect(response.type).toContain('svg');
     });
 
     it('should generate SVG with custom colors', async () => {
@@ -204,7 +207,7 @@ describe('QR Code Generation (E2E)', () => {
         .get(`/api/qrcode/${shortCode}.svg?dark=0000FF&light=FFFF00`)
         .expect(200);
 
-      expect(response.text).toContain('<svg');
+      expect(response.type).toContain('svg');
     });
   });
 

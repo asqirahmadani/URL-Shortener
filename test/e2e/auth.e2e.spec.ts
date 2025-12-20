@@ -145,7 +145,7 @@ describe('Authentication Flow (E2E)', () => {
         .send(registerDto)
         .expect(409);
 
-      expect(response.body.message).toContain('sudah terdaftar');
+      expect(response.body.message).toContain('already registered');
     });
 
     it('should reject registration with invalid email', async () => {
@@ -158,7 +158,7 @@ describe('Authentication Flow (E2E)', () => {
         })
         .expect(400);
 
-      expect(response.body.message).toContain('Email tidak valid');
+      expect(response.body.message).toContain('Email is invalid');
     });
 
     it('should reject registration with weak password', async () => {
@@ -171,7 +171,9 @@ describe('Authentication Flow (E2E)', () => {
         })
         .expect(400);
 
-      expect(response.body.message).toContain('Password minimal 8 karakter');
+      expect(response.body.message).toContain(
+        'Password minimal has 8 characters',
+      );
     });
 
     it('should reject registration without uppercase in password', async () => {
@@ -184,7 +186,9 @@ describe('Authentication Flow (E2E)', () => {
         })
         .expect(400);
 
-      expect(response.body.message).toContain('huruf besar');
+      expect(response.body.message).toContain(
+        'Password must contain uppercase, lowercase letters, and numbers/symbols',
+      );
     });
 
     it('should reject registration with missing fields', async () => {
@@ -252,7 +256,7 @@ describe('Authentication Flow (E2E)', () => {
         })
         .expect(401);
 
-      expect(response.body.message).toContain('Email atau password salah');
+      expect(response.body.message).toContain('Email or password is wrong');
     });
 
     it('should reject login with invalid password', async () => {
@@ -264,7 +268,7 @@ describe('Authentication Flow (E2E)', () => {
         })
         .expect(401);
 
-      expect(response.body.message).toContain('Email atau password salah');
+      expect(response.body.message).toContain('Email or password is wrong');
     });
 
     it('should reject login with missing fields', async () => {
@@ -476,10 +480,16 @@ describe('Authentication Flow (E2E)', () => {
         .set('Authorization', `Bearer ${accessToken}`)
         .expect(204);
 
-      // 7. Verify cannot access after logout
+      // 7. Verify cannot access still valid (JWT stateless)
       await request(app.getHttpServer())
         .get('/api/auth/me')
         .set('Authorization', `Bearer ${accessToken}`)
+        .expect(200);
+
+      // 8. Verify cannot access refreshToken after logout
+      await request(app.getHttpServer())
+        .post('/api/auth/refresh')
+        .send({ refreshToken: loginResponse.body.refreshToken })
         .expect(401);
     });
   });

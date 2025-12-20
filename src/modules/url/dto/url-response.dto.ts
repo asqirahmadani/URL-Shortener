@@ -37,7 +37,7 @@ export class UrlResponseDto {
   createdAt: Date;
 
   // Hide sensitive field
-  @Exclude()
+  @Expose()
   password: string | null;
 
   @Exclude()

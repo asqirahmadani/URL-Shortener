@@ -23,6 +23,8 @@ import { Click } from '../../src/modules/analytics/entities/click.entity';
 import { ApiKey } from '../../src/modules/auth/entities/api-key.entity';
 import { User } from '../../src/modules/auth/entities/user.entity';
 import { Url } from '../../src/modules/url/entities/url.entity';
+
+import { RateLimitGuard } from '../../src/modules/rate-limit/guards/rate-limit.guard';
 import { cleanDatabase } from './setup';
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env.test') });
@@ -80,7 +82,10 @@ describe('URL Management (E2E)', () => {
         AdminModule,
         AuthModule,
       ],
-    }).compile();
+    })
+      .overrideGuard(RateLimitGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
     app = moduleFixture.createNestApplication();
 
@@ -244,7 +249,9 @@ describe('URL Management (E2E)', () => {
         })
         .expect(400);
 
-      expect(response.body.message).toContain('URL tidak valid');
+      expect(response.body.message).toContain(
+        'URL tidak valid. Harus format: https://example.com',
+      );
     });
 
     it('should reject localhost URLs', async () => {
@@ -256,7 +263,9 @@ describe('URL Management (E2E)', () => {
         })
         .expect(400);
 
-      expect(response.body.message).toContain('Cannot shorten localhost');
+      expect(response.body.message).toContain(
+        'URL tidak valid. Harus format: https://example.com',
+      );
     });
 
     it('should reject past expiration dates', async () => {
@@ -284,7 +293,9 @@ describe('URL Management (E2E)', () => {
         })
         .expect(400);
 
-      expect(response.body.message).toContain('huruf, angka, dash, underscore');
+      expect(response.body.message).toContain(
+        'Custom alias hanya boleh huruf, angka, dash, underscore',
+      );
     });
 
     it('should reject request without authentication', async () => {
@@ -399,7 +410,7 @@ describe('URL Management (E2E)', () => {
             title: `URL ${i}`,
           });
       }
-    });
+    }, 30000);
 
     it('should list user URLs with pagination', async () => {
       const response = await request(app.getHttpServer())

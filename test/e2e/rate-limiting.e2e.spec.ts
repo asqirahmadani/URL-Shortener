@@ -23,6 +23,9 @@ import { Click } from '../../src/modules/analytics/entities/click.entity';
 import { ApiKey } from '../../src/modules/auth/entities/api-key.entity';
 import { User } from '../../src/modules/auth/entities/user.entity';
 import { Url } from '../../src/modules/url/entities/url.entity';
+
+import { RateLimitService } from '../../src/modules/rate-limit/rate-limit.service';
+import { CacheService } from '../../src/common/cache/cache.service';
 import { cleanDatabase } from './setup';
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env.test') });
@@ -114,9 +117,19 @@ describe('Rate Limiting (E2E)', () => {
       });
 
     accessToken = registerResponse.body.accessToken;
+
+    const cacheService = app.get(CacheService);
+    await cacheService.reset();
   });
 
   describe('URL Creation Rate Limiting', () => {
+    beforeEach(async () => {
+      const rateLimitService = app.get(RateLimitService);
+      await rateLimitService.resetRateLimit('127.0.0.1');
+      await rateLimitService.resetRateLimit('::1');
+      await rateLimitService.resetRateLimit('::ffff:127.0.0.1');
+    });
+
     it('should allow requests within limit', async () => {
       // make 5 requests (assuming limit is 5 per minute)
       for (let i = 0; i < 5; i++) {
@@ -133,7 +146,7 @@ describe('Rate Limiting (E2E)', () => {
       }
     });
 
-    it('should blcok requests exceeding limit', async () => {
+    it('should block requests exceeding limit', async () => {
       // make requests up to limit
       for (let i = 0; i < 5; i++) {
         await request(app.getHttpServer())
@@ -190,7 +203,10 @@ describe('Rate Limiting (E2E)', () => {
     it('should allow multiple redirects', async () => {
       // redirects typically have higher limits (e.g., 30 per minute)
       for (let i = 0; i < 10; i++) {
-        await request(app.getHttpServer()).get(`/${shortCode}`).expect(302);
+        await request(app.getHttpServer())
+          .get(`/${shortCode}`)
+
+          .expect(302);
       }
     });
 
@@ -213,7 +229,7 @@ describe('Rate Limiting (E2E)', () => {
     it('should limit login attempts', async () => {
       // make multiple failed login attempts
       for (let i = 0; i < 5; i++) {
-        await request(app.getHttpServer())
+        const response = await request(app.getHttpServer())
           .post('/api/auth/login')
           .send({
             email: 'ratelimit@example.com',
@@ -227,7 +243,7 @@ describe('Rate Limiting (E2E)', () => {
         .post('/api/auth/login')
         .send({
           email: 'ratelimit@example.com',
-          password: 'WrongPassword123!',
+          password: 'Password123!',
         })
         .expect(429);
 
@@ -243,7 +259,7 @@ describe('Rate Limiting (E2E)', () => {
           .post('/api/urls')
           .set('Authorization', `Bearer ${accessToken}`)
           .send({
-            originalUrl: 'https://example.com/${i}',
+            originalUrl: `https://example.com/${i}`,
           })
           .expect(201);
       }
@@ -258,7 +274,8 @@ describe('Rate Limiting (E2E)', () => {
         .expect(429);
 
       // wait for TTL to expire (e.g., 60 seconds)
-      await new Promise((resolve) => setTimeout(resolve, 61000));
+      const ttl = 60;
+      await new Promise((resolve) => setTimeout(resolve, (ttl + 2) * 1000));
 
       // should work again
       await request(app.getHttpServer())
