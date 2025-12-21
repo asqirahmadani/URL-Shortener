@@ -1,0 +1,55 @@
+d74ff111a17db8c42d5b1eda60666fb4
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AuthModule = void 0;
+const typeorm_1 = require("@nestjs/typeorm");
+const passport_1 = require("@nestjs/passport");
+const config_1 = require("@nestjs/config");
+const jwt_1 = require("@nestjs/jwt");
+const common_1 = require("@nestjs/common");
+const api_key_strategy_1 = require("./strategies/api-key.strategy");
+const jwt_strategy_1 = require("./strategies/jwt.strategy");
+const jwt_auth_guard_1 = require("./guards/jwt-auth.guard");
+const api_key_guard_1 = require("./guards/api-key.guard");
+const auth_controller_1 = require("./auth.controller");
+const api_key_entity_1 = require("./entities/api-key.entity");
+const roles_guard_1 = require("./guards/roles.guard");
+const user_entity_1 = require("./entities/user.entity");
+const auth_service_1 = require("./auth.service");
+let AuthModule = class AuthModule {
+};
+exports.AuthModule = AuthModule;
+exports.AuthModule = AuthModule = __decorate([
+    (0, common_1.Module)({
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, api_key_entity_1.ApiKey]),
+            passport_1.PassportModule,
+            jwt_1.JwtModule.registerAsync({
+                inject: [config_1.ConfigService],
+                useFactory: (configService) => ({
+                    secret: configService.get('JWT_SECRET'),
+                    signOptions: {
+                        expiresIn: '15m',
+                    },
+                }),
+            }),
+        ],
+        controllers: [auth_controller_1.AuthController],
+        providers: [
+            auth_service_1.AuthService,
+            jwt_strategy_1.JwtStrategy,
+            api_key_strategy_1.ApiKeyStrategy,
+            jwt_auth_guard_1.JwtAuthGuard,
+            roles_guard_1.RolesGuard,
+            api_key_guard_1.ApiKeyGuard,
+        ],
+        exports: [auth_service_1.AuthService, jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard, api_key_guard_1.ApiKeyGuard],
+    })
+], AuthModule);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXGF1dGhcXGF1dGgubW9kdWxlLnRzIiwibWFwcGluZ3MiOiI7Ozs7Ozs7OztBQUFBLDZDQUFnRDtBQUNoRCwrQ0FBa0Q7QUFDbEQsMkNBQStDO0FBQy9DLHFDQUF3QztBQUN4QywyQ0FBd0M7QUFFeEMsb0VBQStEO0FBQy9ELDREQUF3RDtBQUN4RCw0REFBdUQ7QUFDdkQsMERBQXFEO0FBQ3JELHVEQUFtRDtBQUNuRCw4REFBbUQ7QUFDbkQsc0RBQWtEO0FBQ2xELHdEQUE4QztBQUM5QyxpREFBNkM7QUEyQnRDLElBQU0sVUFBVSxHQUFoQixNQUFNLFVBQVU7Q0FBRyxDQUFBO0FBQWIsZ0NBQVU7cUJBQVYsVUFBVTtJQXpCdEIsSUFBQSxlQUFNLEVBQUM7UUFDTixPQUFPLEVBQUU7WUFDUCx1QkFBYSxDQUFDLFVBQVUsQ0FBQyxDQUFDLGtCQUFJLEVBQUUsdUJBQU0sQ0FBQyxDQUFDO1lBQ3hDLHlCQUFjO1lBQ2QsZUFBUyxDQUFDLGFBQWEsQ0FBQztnQkFDdEIsTUFBTSxFQUFFLENBQUMsc0JBQWEsQ0FBQztnQkFDdkIsVUFBVSxFQUFFLENBQUMsYUFBNEIsRUFBRSxFQUFFLENBQUMsQ0FBQztvQkFDN0MsTUFBTSxFQUFFLGFBQWEsQ0FBQyxHQUFHLENBQVMsWUFBWSxDQUFDO29CQUMvQyxXQUFXLEVBQUU7d0JBQ1gsU0FBUyxFQUFFLEtBQUs7cUJBQ2pCO2lCQUNGLENBQUM7YUFDSCxDQUFDO1NBQ0g7UUFDRCxXQUFXLEVBQUUsQ0FBQyxnQ0FBYyxDQUFDO1FBQzdCLFNBQVMsRUFBRTtZQUNULDBCQUFXO1lBQ1gsMEJBQVc7WUFDWCxpQ0FBYztZQUNkLDZCQUFZO1lBQ1osd0JBQVU7WUFDViwyQkFBVztTQUNaO1FBQ0QsT0FBTyxFQUFFLENBQUMsMEJBQVcsRUFBRSw2QkFBWSxFQUFFLHdCQUFVLEVBQUUsMkJBQVcsQ0FBQztLQUM5RCxDQUFDO0dBQ1csVUFBVSxDQUFHIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbIkQ6XFxMYXRpaGFuXFxQcm9ncmFtbWluZ1xcRHVtbXktUHJvamVjdFxcdXJsLXNob3J0ZW5lclxcc3JjXFxtb2R1bGVzXFxhdXRoXFxhdXRoLm1vZHVsZS50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBUeXBlT3JtTW9kdWxlIH0gZnJvbSAnQG5lc3Rqcy90eXBlb3JtJztcbmltcG9ydCB7IFBhc3Nwb3J0TW9kdWxlIH0gZnJvbSAnQG5lc3Rqcy9wYXNzcG9ydCc7XG5pbXBvcnQgeyBDb25maWdTZXJ2aWNlIH0gZnJvbSAnQG5lc3Rqcy9jb25maWcnO1xuaW1wb3J0IHsgSnd0TW9kdWxlIH0gZnJvbSAnQG5lc3Rqcy9qd3QnO1xuaW1wb3J0IHsgTW9kdWxlIH0gZnJvbSAnQG5lc3Rqcy9jb21tb24nO1xuXG5pbXBvcnQgeyBBcGlLZXlTdHJhdGVneSB9IGZyb20gJy4vc3RyYXRlZ2llcy9hcGkta2V5LnN0cmF0ZWd5JztcbmltcG9ydCB7IEp3dFN0cmF0ZWd5IH0gZnJvbSAnLi9zdHJhdGVnaWVzL2p3dC5zdHJhdGVneSc7XG5pbXBvcnQgeyBKd3RBdXRoR3VhcmQgfSBmcm9tICcuL2d1YXJkcy9qd3QtYXV0aC5ndWFyZCc7XG5pbXBvcnQgeyBBcGlLZXlHdWFyZCB9IGZyb20gJy4vZ3VhcmRzL2FwaS1rZXkuZ3VhcmQnO1xuaW1wb3J0IHsgQXV0aENvbnRyb2xsZXIgfSBmcm9tICcuL2F1dGguY29udHJvbGxlcic7XG5pbXBvcnQgeyBBcGlLZXkgfSBmcm9tICcuL2VudGl0aWVzL2FwaS1rZXkuZW50aXR5JztcbmltcG9ydCB7IFJvbGVzR3VhcmQgfSBmcm9tICcuL2d1YXJkcy9yb2xlcy5ndWFyZCc7XG5pbXBvcnQgeyBVc2VyIH0gZnJvbSAnLi9lbnRpdGllcy91c2VyLmVudGl0eSc7XG5pbXBvcnQgeyBBdXRoU2VydmljZSB9IGZyb20gJy4vYXV0aC5zZXJ2aWNlJztcblxuQE1vZHVsZSh7XG4gIGltcG9ydHM6IFtcbiAgICBUeXBlT3JtTW9kdWxlLmZvckZlYXR1cmUoW1VzZXIsIEFwaUtleV0pLFxuICAgIFBhc3Nwb3J0TW9kdWxlLFxuICAgIEp3dE1vZHVsZS5yZWdpc3RlckFzeW5jKHtcbiAgICAgIGluamVjdDogW0NvbmZpZ1NlcnZpY2VdLFxuICAgICAgdXNlRmFjdG9yeTogKGNvbmZpZ1NlcnZpY2U6IENvbmZpZ1NlcnZpY2UpID0+ICh7XG4gICAgICAgIHNlY3JldDogY29uZmlnU2VydmljZS5nZXQ8c3RyaW5nPignSldUX1NFQ1JFVCcpLFxuICAgICAgICBzaWduT3B0aW9uczoge1xuICAgICAgICAgIGV4cGlyZXNJbjogJzE1bScsXG4gICAgICAgIH0sXG4gICAgICB9KSxcbiAgICB9KSxcbiAgXSxcbiAgY29udHJvbGxlcnM6IFtBdXRoQ29udHJvbGxlcl0sXG4gIHByb3ZpZGVyczogW1xuICAgIEF1dGhTZXJ2aWNlLFxuICAgIEp3dFN0cmF0ZWd5LFxuICAgIEFwaUtleVN0cmF0ZWd5LFxuICAgIEp3dEF1dGhHdWFyZCxcbiAgICBSb2xlc0d1YXJkLFxuICAgIEFwaUtleUd1YXJkLFxuICBdLFxuICBleHBvcnRzOiBbQXV0aFNlcnZpY2UsIEp3dEF1dGhHdWFyZCwgUm9sZXNHdWFyZCwgQXBpS2V5R3VhcmRdLFxufSlcbmV4cG9ydCBjbGFzcyBBdXRoTW9kdWxlIHt9XG4iXSwidmVyc2lvbiI6M30=

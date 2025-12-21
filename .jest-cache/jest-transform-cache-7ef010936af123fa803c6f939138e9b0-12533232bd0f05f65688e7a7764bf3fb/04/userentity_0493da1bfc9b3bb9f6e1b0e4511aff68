@@ -1,0 +1,90 @@
+f8dc1abe363f3dcb6ed74a5b209e258b
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.User = exports.UserRole = void 0;
+const typeorm_1 = require("typeorm");
+const class_transformer_1 = require("class-transformer");
+const base_entity_1 = require("../../../common/entities/base.entity");
+const url_entity_1 = require("../../url/entities/url.entity");
+var UserRole;
+(function (UserRole) {
+    UserRole["USER"] = "user";
+    UserRole["PREMIUM"] = "premium";
+    UserRole["ADMIN"] = "admin";
+})(UserRole || (exports.UserRole = UserRole = {}));
+/*
+User Entity - User accounts for authentication
+*/
+let User = class User extends base_entity_1.BaseEntity {
+    email;
+    name;
+    password;
+    role;
+    isEmailVerified;
+    emailVerificationToken;
+    refreshToken;
+    lastLoginAt;
+    isActive;
+    // Relations
+    urls;
+};
+exports.User = User;
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 255, unique: true }),
+    __metadata("design:type", String)
+], User.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 100 }),
+    __metadata("design:type", String)
+], User.prototype, "name", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 60 }),
+    (0, class_transformer_1.Exclude)() // not return this column in response
+    ,
+    __metadata("design:type", String)
+], User.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'enum', enum: UserRole, default: UserRole.USER }),
+    __metadata("design:type", String)
+], User.prototype, "role", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'boolean', default: false }),
+    __metadata("design:type", Boolean)
+], User.prototype, "isEmailVerified", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 255, nullable: true }),
+    (0, class_transformer_1.Exclude)(),
+    __metadata("design:type", Object)
+], User.prototype, "emailVerificationToken", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 255, nullable: true }),
+    (0, class_transformer_1.Exclude)(),
+    __metadata("design:type", Object)
+], User.prototype, "refreshToken", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'timestamp with time zone', nullable: true }),
+    __metadata("design:type", Object)
+], User.prototype, "lastLoginAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'boolean', default: true }),
+    __metadata("design:type", Boolean)
+], User.prototype, "isActive", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => url_entity_1.Url, (url) => url.userId),
+    __metadata("design:type", Array)
+], User.prototype, "urls", void 0);
+exports.User = User = __decorate([
+    (0, typeorm_1.Entity)('users'),
+    (0, typeorm_1.Index)(['email'], { unique: true })
+], User);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXGF1dGhcXGVudGl0aWVzXFx1c2VyLmVudGl0eS50cyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7O0FBQUEscUNBQTJEO0FBQzNELHlEQUE0QztBQUU1QyxzRUFBa0U7QUFDbEUsOERBQW9EO0FBRXBELElBQVksUUFJWDtBQUpELFdBQVksUUFBUTtJQUNsQix5QkFBYSxDQUFBO0lBQ2IsK0JBQW1CLENBQUE7SUFDbkIsMkJBQWUsQ0FBQTtBQUNqQixDQUFDLEVBSlcsUUFBUSx3QkFBUixRQUFRLFFBSW5CO0FBRUQ7O0VBRUU7QUFHSyxJQUFNLElBQUksR0FBVixNQUFNLElBQUssU0FBUSx3QkFBVTtJQUVsQyxLQUFLLENBQVM7SUFHZCxJQUFJLENBQVM7SUFJYixRQUFRLENBQVM7SUFHakIsSUFBSSxDQUFXO0lBR2YsZUFBZSxDQUFVO0lBSXpCLHNCQUFzQixDQUFnQjtJQUl0QyxZQUFZLENBQWdCO0lBRzVCLFdBQVcsQ0FBYztJQUd6QixRQUFRLENBQVU7SUFFbEIsWUFBWTtJQUVaLElBQUksQ0FBUTtDQUNiLENBQUE7QUFsQ1ksb0JBQUk7QUFFZjtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLEdBQUcsRUFBRSxNQUFNLEVBQUUsSUFBSSxFQUFFLENBQUM7O21DQUN6QztBQUdkO0lBREMsSUFBQSxnQkFBTSxFQUFDLEVBQUUsSUFBSSxFQUFFLFNBQVMsRUFBRSxNQUFNLEVBQUUsR0FBRyxFQUFFLENBQUM7O2tDQUM1QjtBQUliO0lBRkMsSUFBQSxnQkFBTSxFQUFDLEVBQUUsSUFBSSxFQUFFLFNBQVMsRUFBRSxNQUFNLEVBQUUsRUFBRSxFQUFFLENBQUM7SUFDdkMsSUFBQSwyQkFBTyxHQUFFLENBQUMscUNBQXFDOzs7c0NBQy9CO0FBR2pCO0lBREMsSUFBQSxnQkFBTSxFQUFDLEVBQUUsSUFBSSxFQUFFLE1BQU0sRUFBRSxJQUFJLEVBQUUsUUFBUSxFQUFFLE9BQU8sRUFBRSxRQUFRLENBQUMsSUFBSSxFQUFFLENBQUM7O2tDQUNsRDtBQUdmO0lBREMsSUFBQSxnQkFBTSxFQUFDLEVBQUUsSUFBSSxFQUFFLFNBQVMsRUFBRSxPQUFPLEVBQUUsS0FBSyxFQUFFLENBQUM7OzZDQUNuQjtBQUl6QjtJQUZDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLEdBQUcsRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUM7SUFDeEQsSUFBQSwyQkFBTyxHQUFFOztvREFDNEI7QUFJdEM7SUFGQyxJQUFBLGdCQUFNLEVBQUMsRUFBRSxJQUFJLEVBQUUsU0FBUyxFQUFFLE1BQU0sRUFBRSxHQUFHLEVBQUUsUUFBUSxFQUFFLElBQUksRUFBRSxDQUFDO0lBQ3hELElBQUEsMkJBQU8sR0FBRTs7MENBQ2tCO0FBRzVCO0lBREMsSUFBQSxnQkFBTSxFQUFDLEVBQUUsSUFBSSxFQUFFLDBCQUEwQixFQUFFLFFBQVEsRUFBRSxJQUFJLEVBQUUsQ0FBQzs7eUNBQ3BDO0FBR3pCO0lBREMsSUFBQSxnQkFBTSxFQUFDLEVBQUUsSUFBSSxFQUFFLFNBQVMsRUFBRSxPQUFPLEVBQUUsSUFBSSxFQUFFLENBQUM7O3NDQUN6QjtBQUlsQjtJQURDLElBQUEsbUJBQVMsRUFBQyxHQUFHLEVBQUUsQ0FBQyxnQkFBRyxFQUFFLENBQUMsR0FBRyxFQUFFLEVBQUUsQ0FBQyxHQUFHLENBQUMsTUFBTSxDQUFDOztrQ0FDOUI7ZUFqQ0QsSUFBSTtJQUZoQixJQUFBLGdCQUFNLEVBQUMsT0FBTyxDQUFDO0lBQ2YsSUFBQSxlQUFLLEVBQUMsQ0FBQyxPQUFPLENBQUMsRUFBRSxFQUFFLE1BQU0sRUFBRSxJQUFJLEVBQUUsQ0FBQztHQUN0QixJQUFJLENBa0NoQiIsIm5hbWVzIjpbXSwic291cmNlcyI6WyJEOlxcTGF0aWhhblxcUHJvZ3JhbW1pbmdcXER1bW15LVByb2plY3RcXHVybC1zaG9ydGVuZXJcXHNyY1xcbW9kdWxlc1xcYXV0aFxcZW50aXRpZXNcXHVzZXIuZW50aXR5LnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IEVudGl0eSwgQ29sdW1uLCBJbmRleCwgT25lVG9NYW55IH0gZnJvbSAndHlwZW9ybSc7XHJcbmltcG9ydCB7IEV4Y2x1ZGUgfSBmcm9tICdjbGFzcy10cmFuc2Zvcm1lcic7XHJcblxyXG5pbXBvcnQgeyBCYXNlRW50aXR5IH0gZnJvbSAnLi4vLi4vLi4vY29tbW9uL2VudGl0aWVzL2Jhc2UuZW50aXR5JztcclxuaW1wb3J0IHsgVXJsIH0gZnJvbSAnLi4vLi4vdXJsL2VudGl0aWVzL3VybC5lbnRpdHknO1xyXG5cclxuZXhwb3J0IGVudW0gVXNlclJvbGUge1xyXG4gIFVTRVIgPSAndXNlcicsXHJcbiAgUFJFTUlVTSA9ICdwcmVtaXVtJyxcclxuICBBRE1JTiA9ICdhZG1pbicsXHJcbn1cclxuXHJcbi8qIFxyXG5Vc2VyIEVudGl0eSAtIFVzZXIgYWNjb3VudHMgZm9yIGF1dGhlbnRpY2F0aW9uXHJcbiovXHJcbkBFbnRpdHkoJ3VzZXJzJylcclxuQEluZGV4KFsnZW1haWwnXSwgeyB1bmlxdWU6IHRydWUgfSlcclxuZXhwb3J0IGNsYXNzIFVzZXIgZXh0ZW5kcyBCYXNlRW50aXR5IHtcclxuICBAQ29sdW1uKHsgdHlwZTogJ3ZhcmNoYXInLCBsZW5ndGg6IDI1NSwgdW5pcXVlOiB0cnVlIH0pXHJcbiAgZW1haWw6IHN0cmluZztcclxuXHJcbiAgQENvbHVtbih7IHR5cGU6ICd2YXJjaGFyJywgbGVuZ3RoOiAxMDAgfSlcclxuICBuYW1lOiBzdHJpbmc7XHJcblxyXG4gIEBDb2x1bW4oeyB0eXBlOiAndmFyY2hhcicsIGxlbmd0aDogNjAgfSlcclxuICBARXhjbHVkZSgpIC8vIG5vdCByZXR1cm4gdGhpcyBjb2x1bW4gaW4gcmVzcG9uc2VcclxuICBwYXNzd29yZDogc3RyaW5nO1xyXG5cclxuICBAQ29sdW1uKHsgdHlwZTogJ2VudW0nLCBlbnVtOiBVc2VyUm9sZSwgZGVmYXVsdDogVXNlclJvbGUuVVNFUiB9KVxyXG4gIHJvbGU6IFVzZXJSb2xlO1xyXG5cclxuICBAQ29sdW1uKHsgdHlwZTogJ2Jvb2xlYW4nLCBkZWZhdWx0OiBmYWxzZSB9KVxyXG4gIGlzRW1haWxWZXJpZmllZDogYm9vbGVhbjtcclxuXHJcbiAgQENvbHVtbih7IHR5cGU6ICd2YXJjaGFyJywgbGVuZ3RoOiAyNTUsIG51bGxhYmxlOiB0cnVlIH0pXHJcbiAgQEV4Y2x1ZGUoKVxyXG4gIGVtYWlsVmVyaWZpY2F0aW9uVG9rZW46IHN0cmluZyB8IG51bGw7XHJcblxyXG4gIEBDb2x1bW4oeyB0eXBlOiAndmFyY2hhcicsIGxlbmd0aDogMjU1LCBudWxsYWJsZTogdHJ1ZSB9KVxyXG4gIEBFeGNsdWRlKClcclxuICByZWZyZXNoVG9rZW46IHN0cmluZyB8IG51bGw7XHJcblxyXG4gIEBDb2x1bW4oeyB0eXBlOiAndGltZXN0YW1wIHdpdGggdGltZSB6b25lJywgbnVsbGFibGU6IHRydWUgfSlcclxuICBsYXN0TG9naW5BdDogRGF0ZSB8IG51bGw7XHJcblxyXG4gIEBDb2x1bW4oeyB0eXBlOiAnYm9vbGVhbicsIGRlZmF1bHQ6IHRydWUgfSlcclxuICBpc0FjdGl2ZTogYm9vbGVhbjtcclxuXHJcbiAgLy8gUmVsYXRpb25zXHJcbiAgQE9uZVRvTWFueSgoKSA9PiBVcmwsICh1cmwpID0+IHVybC51c2VySWQpXHJcbiAgdXJsczogVXJsW107XHJcbn1cclxuIl0sInZlcnNpb24iOjN9

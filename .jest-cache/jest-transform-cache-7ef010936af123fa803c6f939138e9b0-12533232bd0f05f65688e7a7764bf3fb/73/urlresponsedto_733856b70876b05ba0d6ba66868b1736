@@ -1,0 +1,92 @@
+09a801a2d51f55155e3a601c1ea525b5
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a, _b, _c;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UrlResponseDto = void 0;
+const class_transformer_1 = require("class-transformer");
+// DTO for response URL to client
+class UrlResponseDto {
+    id;
+    originalUrl;
+    shortCode;
+    shortUrl;
+    customAlias;
+    title;
+    clickCount;
+    expiresAt;
+    isActive;
+    maxClicks;
+    createdAt;
+    // Hide sensitive field
+    password;
+    userId;
+    deletedAt;
+}
+exports.UrlResponseDto = UrlResponseDto;
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    __metadata("design:type", String)
+], UrlResponseDto.prototype, "id", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    __metadata("design:type", String)
+], UrlResponseDto.prototype, "originalUrl", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    __metadata("design:type", String)
+], UrlResponseDto.prototype, "shortCode", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    (0, class_transformer_1.Transform)(({ obj }) => `${process.env.BASE_URL}/${obj.shortCode}`),
+    __metadata("design:type", String)
+], UrlResponseDto.prototype, "shortUrl", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    __metadata("design:type", Object)
+], UrlResponseDto.prototype, "customAlias", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    __metadata("design:type", Object)
+], UrlResponseDto.prototype, "title", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    __metadata("design:type", Number)
+], UrlResponseDto.prototype, "clickCount", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    __metadata("design:type", Object)
+], UrlResponseDto.prototype, "expiresAt", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    __metadata("design:type", Boolean)
+], UrlResponseDto.prototype, "isActive", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    __metadata("design:type", Object)
+], UrlResponseDto.prototype, "maxClicks", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    __metadata("design:type", typeof (_b = typeof Date !== "undefined" && Date) === "function" ? _b : Object)
+], UrlResponseDto.prototype, "createdAt", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    __metadata("design:type", Object)
+], UrlResponseDto.prototype, "password", void 0);
+__decorate([
+    (0, class_transformer_1.Exclude)(),
+    __metadata("design:type", Object)
+], UrlResponseDto.prototype, "userId", void 0);
+__decorate([
+    (0, class_transformer_1.Exclude)(),
+    __metadata("design:type", Object)
+], UrlResponseDto.prototype, "deletedAt", void 0);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXHVybFxcZHRvXFx1cmwtcmVzcG9uc2UuZHRvLnRzIiwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7QUFBQSx5REFBK0Q7QUFFL0QsaUNBQWlDO0FBQ2pDLE1BQWEsY0FBYztJQUV6QixFQUFFLENBQVM7SUFHWCxXQUFXLENBQVM7SUFHcEIsU0FBUyxDQUFTO0lBSWxCLFFBQVEsQ0FBUztJQUdqQixXQUFXLENBQWdCO0lBRzNCLEtBQUssQ0FBZ0I7SUFHckIsVUFBVSxDQUFTO0lBR25CLFNBQVMsQ0FBYztJQUd2QixRQUFRLENBQVU7SUFHbEIsU0FBUyxDQUFnQjtJQUd6QixTQUFTLENBQU87SUFFaEIsdUJBQXVCO0lBRXZCLFFBQVEsQ0FBZ0I7SUFHeEIsTUFBTSxDQUFnQjtJQUd0QixTQUFTLENBQWM7Q0FDeEI7QUE1Q0Qsd0NBNENDO0FBMUNDO0lBREMsSUFBQSwwQkFBTSxHQUFFOzswQ0FDRTtBQUdYO0lBREMsSUFBQSwwQkFBTSxHQUFFOzttREFDVztBQUdwQjtJQURDLElBQUEsMEJBQU0sR0FBRTs7aURBQ1M7QUFJbEI7SUFGQyxJQUFBLDBCQUFNLEdBQUU7SUFDUixJQUFBLDZCQUFTLEVBQUMsQ0FBQyxFQUFFLEdBQUcsRUFBRSxFQUFFLEVBQUUsQ0FBQyxHQUFHLE9BQU8sQ0FBQyxHQUFHLENBQUMsUUFBUSxJQUFJLEdBQUcsQ0FBQyxTQUFTLEVBQUUsQ0FBQzs7Z0RBQ2xEO0FBR2pCO0lBREMsSUFBQSwwQkFBTSxHQUFFOzttREFDa0I7QUFHM0I7SUFEQyxJQUFBLDBCQUFNLEdBQUU7OzZDQUNZO0FBR3JCO0lBREMsSUFBQSwwQkFBTSxHQUFFOztrREFDVTtBQUduQjtJQURDLElBQUEsMEJBQU0sR0FBRTs7aURBQ2M7QUFHdkI7SUFEQyxJQUFBLDBCQUFNLEdBQUU7O2dEQUNTO0FBR2xCO0lBREMsSUFBQSwwQkFBTSxHQUFFOztpREFDZ0I7QUFHekI7SUFEQyxJQUFBLDBCQUFNLEdBQUU7a0RBQ0UsSUFBSSxvQkFBSixJQUFJO2lEQUFDO0FBSWhCO0lBREMsSUFBQSwwQkFBTSxHQUFFOztnREFDZTtBQUd4QjtJQURDLElBQUEsMkJBQU8sR0FBRTs7OENBQ1k7QUFHdEI7SUFEQyxJQUFBLDJCQUFPLEdBQUU7O2lEQUNhIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbIkQ6XFxMYXRpaGFuXFxQcm9ncmFtbWluZ1xcRHVtbXktUHJvamVjdFxcdXJsLXNob3J0ZW5lclxcc3JjXFxtb2R1bGVzXFx1cmxcXGR0b1xcdXJsLXJlc3BvbnNlLmR0by50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBFeGNsdWRlLCBFeHBvc2UsIFRyYW5zZm9ybSB9IGZyb20gJ2NsYXNzLXRyYW5zZm9ybWVyJztcclxuXHJcbi8vIERUTyBmb3IgcmVzcG9uc2UgVVJMIHRvIGNsaWVudFxyXG5leHBvcnQgY2xhc3MgVXJsUmVzcG9uc2VEdG8ge1xyXG4gIEBFeHBvc2UoKVxyXG4gIGlkOiBzdHJpbmc7XHJcblxyXG4gIEBFeHBvc2UoKVxyXG4gIG9yaWdpbmFsVXJsOiBzdHJpbmc7XHJcblxyXG4gIEBFeHBvc2UoKVxyXG4gIHNob3J0Q29kZTogc3RyaW5nO1xyXG5cclxuICBARXhwb3NlKClcclxuICBAVHJhbnNmb3JtKCh7IG9iaiB9KSA9PiBgJHtwcm9jZXNzLmVudi5CQVNFX1VSTH0vJHtvYmouc2hvcnRDb2RlfWApXHJcbiAgc2hvcnRVcmw6IHN0cmluZztcclxuXHJcbiAgQEV4cG9zZSgpXHJcbiAgY3VzdG9tQWxpYXM6IHN0cmluZyB8IG51bGw7XHJcblxyXG4gIEBFeHBvc2UoKVxyXG4gIHRpdGxlOiBzdHJpbmcgfCBudWxsO1xyXG5cclxuICBARXhwb3NlKClcclxuICBjbGlja0NvdW50OiBudW1iZXI7XHJcblxyXG4gIEBFeHBvc2UoKVxyXG4gIGV4cGlyZXNBdDogRGF0ZSB8IG51bGw7XHJcblxyXG4gIEBFeHBvc2UoKVxyXG4gIGlzQWN0aXZlOiBib29sZWFuO1xyXG5cclxuICBARXhwb3NlKClcclxuICBtYXhDbGlja3M6IG51bWJlciB8IG51bGw7XHJcblxyXG4gIEBFeHBvc2UoKVxyXG4gIGNyZWF0ZWRBdDogRGF0ZTtcclxuXHJcbiAgLy8gSGlkZSBzZW5zaXRpdmUgZmllbGRcclxuICBARXhwb3NlKClcclxuICBwYXNzd29yZDogc3RyaW5nIHwgbnVsbDtcclxuXHJcbiAgQEV4Y2x1ZGUoKVxyXG4gIHVzZXJJZDogc3RyaW5nIHwgbnVsbDtcclxuXHJcbiAgQEV4Y2x1ZGUoKVxyXG4gIGRlbGV0ZWRBdDogRGF0ZSB8IG51bGw7XHJcbn1cclxuIl0sInZlcnNpb24iOjN9

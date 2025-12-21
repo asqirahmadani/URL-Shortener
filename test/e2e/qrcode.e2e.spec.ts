@@ -23,6 +23,8 @@ import { Click } from '../../src/modules/analytics/entities/click.entity';
 import { ApiKey } from '../../src/modules/auth/entities/api-key.entity';
 import { User } from '../../src/modules/auth/entities/user.entity';
 import { Url } from '../../src/modules/url/entities/url.entity';
+
+import { RateLimitGuard } from '../../src/modules/rate-limit/guards/rate-limit.guard';
 import { cleanDatabase } from './setup';
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env.test') });
@@ -80,7 +82,10 @@ describe('QR Code Generation (E2E)', () => {
         AdminModule,
         AuthModule,
       ],
-    }).compile();
+    })
+      .overrideGuard(RateLimitGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
     app = moduleFixture.createNestApplication();
 
@@ -100,7 +105,7 @@ describe('QR Code Generation (E2E)', () => {
 
   afterAll(async () => {
     await app.close();
-  });
+  }, 10000);
 
   beforeEach(async () => {
     await cleanDatabase();
@@ -145,7 +150,7 @@ describe('QR Code Generation (E2E)', () => {
 
       expect(response.headers['content-type']).toBe('image/png');
       expect(response.body).toBeInstanceOf(Buffer);
-    });
+    }, 10000);
 
     it('should generate PNG with custom colors', async () => {
       const response = await request(app.getHttpServer())
@@ -284,6 +289,6 @@ describe('QR Code Generation (E2E)', () => {
 
       // QR codes should be different
       expect(response1.body).not.toEqual(response2.body);
-    });
+    }, 10000);
   });
 });

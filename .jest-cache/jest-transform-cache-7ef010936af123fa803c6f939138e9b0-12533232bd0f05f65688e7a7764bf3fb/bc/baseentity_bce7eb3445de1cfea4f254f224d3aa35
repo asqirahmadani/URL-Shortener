@@ -1,0 +1,40 @@
+449e4eaa3ba088a7186de96985603a5a
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a, _b, _c;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BaseEntity = void 0;
+const typeorm_1 = require("typeorm");
+// Base Entity - Abstract class for shared properties
+class BaseEntity {
+    id;
+    createdAt;
+    updatedAt;
+    deletedAt;
+}
+exports.BaseEntity = BaseEntity;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    __metadata("design:type", String)
+], BaseEntity.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)({ type: 'timestamp with time zone' }),
+    __metadata("design:type", typeof (_a = typeof Date !== "undefined" && Date) === "function" ? _a : Object)
+], BaseEntity.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)({ type: 'timestamp with time zone' }),
+    __metadata("design:type", typeof (_b = typeof Date !== "undefined" && Date) === "function" ? _b : Object)
+], BaseEntity.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)({ type: 'timestamp with time zone', nullable: true }),
+    __metadata("design:type", Object)
+], BaseEntity.prototype, "deletedAt", void 0);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXGNvbW1vblxcZW50aXRpZXNcXGJhc2UuZW50aXR5LnRzIiwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7QUFBQSxxQ0FLaUI7QUFFakIscURBQXFEO0FBQ3JELE1BQXNCLFVBQVU7SUFFOUIsRUFBRSxDQUFTO0lBR1gsU0FBUyxDQUFPO0lBR2hCLFNBQVMsQ0FBTztJQUdoQixTQUFTLENBQWM7Q0FDeEI7QUFaRCxnQ0FZQztBQVZDO0lBREMsSUFBQSxnQ0FBc0IsRUFBQyxNQUFNLENBQUM7O3NDQUNwQjtBQUdYO0lBREMsSUFBQSwwQkFBZ0IsRUFBQyxFQUFFLElBQUksRUFBRSwwQkFBMEIsRUFBRSxDQUFDO2tEQUM1QyxJQUFJLG9CQUFKLElBQUk7NkNBQUM7QUFHaEI7SUFEQyxJQUFBLDBCQUFnQixFQUFDLEVBQUUsSUFBSSxFQUFFLDBCQUEwQixFQUFFLENBQUM7a0RBQzVDLElBQUksb0JBQUosSUFBSTs2Q0FBQztBQUdoQjtJQURDLElBQUEsMEJBQWdCLEVBQUMsRUFBRSxJQUFJLEVBQUUsMEJBQTBCLEVBQUUsUUFBUSxFQUFFLElBQUksRUFBRSxDQUFDOzs2Q0FDaEQiLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXGNvbW1vblxcZW50aXRpZXNcXGJhc2UuZW50aXR5LnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7XHJcbiAgUHJpbWFyeUdlbmVyYXRlZENvbHVtbixcclxuICBDcmVhdGVEYXRlQ29sdW1uLFxyXG4gIFVwZGF0ZURhdGVDb2x1bW4sXHJcbiAgRGVsZXRlRGF0ZUNvbHVtbixcclxufSBmcm9tICd0eXBlb3JtJztcclxuXHJcbi8vIEJhc2UgRW50aXR5IC0gQWJzdHJhY3QgY2xhc3MgZm9yIHNoYXJlZCBwcm9wZXJ0aWVzXHJcbmV4cG9ydCBhYnN0cmFjdCBjbGFzcyBCYXNlRW50aXR5IHtcclxuICBAUHJpbWFyeUdlbmVyYXRlZENvbHVtbigndXVpZCcpXHJcbiAgaWQ6IHN0cmluZztcclxuXHJcbiAgQENyZWF0ZURhdGVDb2x1bW4oeyB0eXBlOiAndGltZXN0YW1wIHdpdGggdGltZSB6b25lJyB9KVxyXG4gIGNyZWF0ZWRBdDogRGF0ZTtcclxuXHJcbiAgQFVwZGF0ZURhdGVDb2x1bW4oeyB0eXBlOiAndGltZXN0YW1wIHdpdGggdGltZSB6b25lJyB9KVxyXG4gIHVwZGF0ZWRBdDogRGF0ZTtcclxuXHJcbiAgQERlbGV0ZURhdGVDb2x1bW4oeyB0eXBlOiAndGltZXN0YW1wIHdpdGggdGltZSB6b25lJywgbnVsbGFibGU6IHRydWUgfSlcclxuICBkZWxldGVkQXQ6IERhdGUgfCBudWxsO1xyXG59XHJcbiJdLCJ2ZXJzaW9uIjozfQ==

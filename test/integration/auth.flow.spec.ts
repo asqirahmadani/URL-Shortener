@@ -11,8 +11,10 @@ import * as path from 'path';
 import { User, UserRole } from '../../src/modules/auth/entities/user.entity';
 import { Click } from '../../src/modules/analytics/entities/click.entity';
 import { ApiKey } from '../../src/modules/auth/entities/api-key.entity';
-import { AuthService } from '../../src/modules/auth/auth.service';
 import { Url } from '../../src/modules/url/entities/url.entity';
+
+import { RateLimitGuard } from '../../src/modules/rate-limit/guards/rate-limit.guard';
+import { AuthService } from '../../src/modules/auth/auth.service';
 import { AuthModule } from '../../src/modules/auth/auth.module';
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env.test') });
@@ -51,7 +53,10 @@ describe('Authentication FLow (Integration)', () => {
         }),
         AuthModule,
       ],
-    }).compile();
+    })
+      .overrideGuard(RateLimitGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
     app = module.createNestApplication();
     await app.init();

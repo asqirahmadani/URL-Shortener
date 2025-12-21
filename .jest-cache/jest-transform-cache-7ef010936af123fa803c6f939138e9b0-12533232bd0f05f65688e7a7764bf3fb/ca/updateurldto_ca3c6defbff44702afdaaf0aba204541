@@ -1,0 +1,44 @@
+b1c35cede2738ecb553b064cc71e9420
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UpdateUrlDto = void 0;
+const class_validator_1 = require("class-validator");
+class UpdateUrlDto {
+    title;
+    isActive;
+    expiresAt;
+    maxClicks;
+}
+exports.UpdateUrlDto = UpdateUrlDto;
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(255),
+    __metadata("design:type", Object)
+], UpdateUrlDto.prototype, "title", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsBoolean)(),
+    __metadata("design:type", Boolean)
+], UpdateUrlDto.prototype, "isActive", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsDateString)(),
+    __metadata("design:type", Object)
+], UpdateUrlDto.prototype, "expiresAt", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsInt)(),
+    (0, class_validator_1.Min)(0),
+    __metadata("design:type", Number)
+], UpdateUrlDto.prototype, "maxClicks", void 0);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXHVybFxcZHRvXFx1cGRhdGUtdXJsLmR0by50cyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7QUFBQSxxREFReUI7QUFFekIsTUFBYSxZQUFZO0lBSXZCLEtBQUssQ0FBaUI7SUFJdEIsUUFBUSxDQUFXO0lBSW5CLFNBQVMsQ0FBaUI7SUFLMUIsU0FBUyxDQUFVO0NBQ3BCO0FBbEJELG9DQWtCQztBQWRDO0lBSEMsSUFBQSw0QkFBVSxHQUFFO0lBQ1osSUFBQSwwQkFBUSxHQUFFO0lBQ1YsSUFBQSwyQkFBUyxFQUFDLEdBQUcsQ0FBQzs7MkNBQ087QUFJdEI7SUFGQyxJQUFBLDRCQUFVLEdBQUU7SUFDWixJQUFBLDJCQUFTLEdBQUU7OzhDQUNPO0FBSW5CO0lBRkMsSUFBQSw0QkFBVSxHQUFFO0lBQ1osSUFBQSw4QkFBWSxHQUFFOzsrQ0FDVztBQUsxQjtJQUhDLElBQUEsNEJBQVUsR0FBRTtJQUNaLElBQUEsdUJBQUssR0FBRTtJQUNQLElBQUEscUJBQUcsRUFBQyxDQUFDLENBQUM7OytDQUNZIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbIkQ6XFxMYXRpaGFuXFxQcm9ncmFtbWluZ1xcRHVtbXktUHJvamVjdFxcdXJsLXNob3J0ZW5lclxcc3JjXFxtb2R1bGVzXFx1cmxcXGR0b1xcdXBkYXRlLXVybC5kdG8udHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtcclxuICBJc09wdGlvbmFsLFxyXG4gIElzU3RyaW5nLFxyXG4gIE1heExlbmd0aCxcclxuICBJc0Jvb2xlYW4sXHJcbiAgSXNEYXRlU3RyaW5nLFxyXG4gIElzSW50LFxyXG4gIE1pbixcclxufSBmcm9tICdjbGFzcy12YWxpZGF0b3InO1xyXG5cclxuZXhwb3J0IGNsYXNzIFVwZGF0ZVVybER0byB7XHJcbiAgQElzT3B0aW9uYWwoKVxyXG4gIEBJc1N0cmluZygpXHJcbiAgQE1heExlbmd0aCgyNTUpXHJcbiAgdGl0bGU/OiBzdHJpbmcgfCBudWxsO1xyXG5cclxuICBASXNPcHRpb25hbCgpXHJcbiAgQElzQm9vbGVhbigpXHJcbiAgaXNBY3RpdmU/OiBib29sZWFuO1xyXG5cclxuICBASXNPcHRpb25hbCgpXHJcbiAgQElzRGF0ZVN0cmluZygpXHJcbiAgZXhwaXJlc0F0Pzogc3RyaW5nIHwgbnVsbDtcclxuXHJcbiAgQElzT3B0aW9uYWwoKVxyXG4gIEBJc0ludCgpXHJcbiAgQE1pbigwKVxyXG4gIG1heENsaWNrcz86IG51bWJlcjtcclxufVxyXG4iXSwidmVyc2lvbiI6M30=

@@ -1,0 +1,65 @@
+5c4f27e75e5033aabb16c179e4dbb78c
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CreateUrlDto = void 0;
+const class_validator_1 = require("class-validator");
+const class_transformer_1 = require("class-transformer");
+// DTO for validation input
+class CreateUrlDto {
+    originalUrl;
+    customAlias;
+    title;
+    expiresAt;
+    password;
+    maxClicks;
+}
+exports.CreateUrlDto = CreateUrlDto;
+__decorate([
+    (0, class_validator_1.IsUrl)({}, { message: 'URL tidak valid. Harus format: https://example.com' }),
+    (0, class_validator_1.MaxLength)(2048, { message: 'URL terlalu panjang (max 2048 karakter)' }),
+    __metadata("design:type", String)
+], CreateUrlDto.prototype, "originalUrl", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MinLength)(3, { message: 'Custom alias minimal 3 karakter' }),
+    (0, class_validator_1.MaxLength)(50, { message: 'Custom alias maksimal 50 karakter' }),
+    (0, class_validator_1.Matches)(/^[a-zA-Z0-9-_]+$/, {
+        message: 'Custom alias hanya boleh huruf, angka, dash, underscore',
+    }),
+    (0, class_transformer_1.Transform)(({ value }) => value?.toLowerCase()),
+    __metadata("design:type", String)
+], CreateUrlDto.prototype, "customAlias", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(255),
+    __metadata("design:type", String)
+], CreateUrlDto.prototype, "title", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsDateString)({}, { message: 'Format tanggal tidak valid (ISO 8601)' }),
+    __metadata("design:type", String)
+], CreateUrlDto.prototype, "expiresAt", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MinLength)(6, { message: 'Password minimal 6 karakter' }),
+    __metadata("design:type", String)
+], CreateUrlDto.prototype, "password", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsInt)(),
+    (0, class_validator_1.Min)(1, { message: 'Max clicks harus minimal 1' }),
+    __metadata("design:type", Number)
+], CreateUrlDto.prototype, "maxClicks", void 0);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXHVybFxcZHRvXFxjcmVhdGUtdXJsLmR0by50cyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7QUFBQSxxREFVeUI7QUFDekIseURBQThDO0FBRTlDLDJCQUEyQjtBQUMzQixNQUFhLFlBQVk7SUFHdkIsV0FBVyxDQUFTO0lBVXBCLFdBQVcsQ0FBVTtJQUtyQixLQUFLLENBQVU7SUFJZixTQUFTLENBQVU7SUFLbkIsUUFBUSxDQUFVO0lBS2xCLFNBQVMsQ0FBVTtDQUNwQjtBQWpDRCxvQ0FpQ0M7QUE5QkM7SUFGQyxJQUFBLHVCQUFLLEVBQUMsRUFBRSxFQUFFLEVBQUUsT0FBTyxFQUFFLG9EQUFvRCxFQUFFLENBQUM7SUFDNUUsSUFBQSwyQkFBUyxFQUFDLElBQUksRUFBRSxFQUFFLE9BQU8sRUFBRSx5Q0FBeUMsRUFBRSxDQUFDOztpREFDcEQ7QUFVcEI7SUFSQyxJQUFBLDRCQUFVLEdBQUU7SUFDWixJQUFBLDBCQUFRLEdBQUU7SUFDVixJQUFBLDJCQUFTLEVBQUMsQ0FBQyxFQUFFLEVBQUUsT0FBTyxFQUFFLGlDQUFpQyxFQUFFLENBQUM7SUFDNUQsSUFBQSwyQkFBUyxFQUFDLEVBQUUsRUFBRSxFQUFFLE9BQU8sRUFBRSxtQ0FBbUMsRUFBRSxDQUFDO0lBQy9ELElBQUEseUJBQU8sRUFBQyxrQkFBa0IsRUFBRTtRQUMzQixPQUFPLEVBQUUseURBQXlEO0tBQ25FLENBQUM7SUFDRCxJQUFBLDZCQUFTLEVBQUMsQ0FBQyxFQUFFLEtBQUssRUFBRSxFQUFFLEVBQUUsQ0FBQyxLQUFLLEVBQUUsV0FBVyxFQUFFLENBQUM7O2lEQUMxQjtBQUtyQjtJQUhDLElBQUEsNEJBQVUsR0FBRTtJQUNaLElBQUEsMEJBQVEsR0FBRTtJQUNWLElBQUEsMkJBQVMsRUFBQyxHQUFHLENBQUM7OzJDQUNBO0FBSWY7SUFGQyxJQUFBLDRCQUFVLEdBQUU7SUFDWixJQUFBLDhCQUFZLEVBQUMsRUFBRSxFQUFFLEVBQUUsT0FBTyxFQUFFLHVDQUF1QyxFQUFFLENBQUM7OytDQUNwRDtBQUtuQjtJQUhDLElBQUEsNEJBQVUsR0FBRTtJQUNaLElBQUEsMEJBQVEsR0FBRTtJQUNWLElBQUEsMkJBQVMsRUFBQyxDQUFDLEVBQUUsRUFBRSxPQUFPLEVBQUUsNkJBQTZCLEVBQUUsQ0FBQzs7OENBQ3ZDO0FBS2xCO0lBSEMsSUFBQSw0QkFBVSxHQUFFO0lBQ1osSUFBQSx1QkFBSyxHQUFFO0lBQ1AsSUFBQSxxQkFBRyxFQUFDLENBQUMsRUFBRSxFQUFFLE9BQU8sRUFBRSw0QkFBNEIsRUFBRSxDQUFDOzsrQ0FDL0IiLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXHVybFxcZHRvXFxjcmVhdGUtdXJsLmR0by50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQge1xyXG4gIElzVXJsLFxyXG4gIElzT3B0aW9uYWwsXHJcbiAgTWF4TGVuZ3RoLFxyXG4gIE1pbkxlbmd0aCxcclxuICBNaW4sXHJcbiAgSXNEYXRlU3RyaW5nLFxyXG4gIE1hdGNoZXMsXHJcbiAgSXNTdHJpbmcsXHJcbiAgSXNJbnQsXHJcbn0gZnJvbSAnY2xhc3MtdmFsaWRhdG9yJztcclxuaW1wb3J0IHsgVHJhbnNmb3JtIH0gZnJvbSAnY2xhc3MtdHJhbnNmb3JtZXInO1xyXG5cclxuLy8gRFRPIGZvciB2YWxpZGF0aW9uIGlucHV0XHJcbmV4cG9ydCBjbGFzcyBDcmVhdGVVcmxEdG8ge1xyXG4gIEBJc1VybCh7fSwgeyBtZXNzYWdlOiAnVVJMIHRpZGFrIHZhbGlkLiBIYXJ1cyBmb3JtYXQ6IGh0dHBzOi8vZXhhbXBsZS5jb20nIH0pXHJcbiAgQE1heExlbmd0aCgyMDQ4LCB7IG1lc3NhZ2U6ICdVUkwgdGVybGFsdSBwYW5qYW5nIChtYXggMjA0OCBrYXJha3RlciknIH0pXHJcbiAgb3JpZ2luYWxVcmw6IHN0cmluZztcclxuXHJcbiAgQElzT3B0aW9uYWwoKVxyXG4gIEBJc1N0cmluZygpXHJcbiAgQE1pbkxlbmd0aCgzLCB7IG1lc3NhZ2U6ICdDdXN0b20gYWxpYXMgbWluaW1hbCAzIGthcmFrdGVyJyB9KVxyXG4gIEBNYXhMZW5ndGgoNTAsIHsgbWVzc2FnZTogJ0N1c3RvbSBhbGlhcyBtYWtzaW1hbCA1MCBrYXJha3RlcicgfSlcclxuICBATWF0Y2hlcygvXlthLXpBLVowLTktX10rJC8sIHtcclxuICAgIG1lc3NhZ2U6ICdDdXN0b20gYWxpYXMgaGFueWEgYm9sZWggaHVydWYsIGFuZ2thLCBkYXNoLCB1bmRlcnNjb3JlJyxcclxuICB9KVxyXG4gIEBUcmFuc2Zvcm0oKHsgdmFsdWUgfSkgPT4gdmFsdWU/LnRvTG93ZXJDYXNlKCkpXHJcbiAgY3VzdG9tQWxpYXM/OiBzdHJpbmc7XHJcblxyXG4gIEBJc09wdGlvbmFsKClcclxuICBASXNTdHJpbmcoKVxyXG4gIEBNYXhMZW5ndGgoMjU1KVxyXG4gIHRpdGxlPzogc3RyaW5nO1xyXG5cclxuICBASXNPcHRpb25hbCgpXHJcbiAgQElzRGF0ZVN0cmluZyh7fSwgeyBtZXNzYWdlOiAnRm9ybWF0IHRhbmdnYWwgdGlkYWsgdmFsaWQgKElTTyA4NjAxKScgfSlcclxuICBleHBpcmVzQXQ/OiBzdHJpbmc7XHJcblxyXG4gIEBJc09wdGlvbmFsKClcclxuICBASXNTdHJpbmcoKVxyXG4gIEBNaW5MZW5ndGgoNiwgeyBtZXNzYWdlOiAnUGFzc3dvcmQgbWluaW1hbCA2IGthcmFrdGVyJyB9KVxyXG4gIHBhc3N3b3JkPzogc3RyaW5nO1xyXG5cclxuICBASXNPcHRpb25hbCgpXHJcbiAgQElzSW50KClcclxuICBATWluKDEsIHsgbWVzc2FnZTogJ01heCBjbGlja3MgaGFydXMgbWluaW1hbCAxJyB9KVxyXG4gIG1heENsaWNrcz86IG51bWJlcjtcclxufVxyXG4iXSwidmVyc2lvbiI6M30=

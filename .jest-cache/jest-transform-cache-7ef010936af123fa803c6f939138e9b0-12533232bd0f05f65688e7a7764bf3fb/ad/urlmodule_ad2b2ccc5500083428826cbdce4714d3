@@ -1,0 +1,29 @@
+9d0d0bacfede5c17955470a60e333d46
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UrlModule = void 0;
+const typeorm_1 = require("@nestjs/typeorm");
+const common_1 = require("@nestjs/common");
+const analytics_module_1 = require("../analytics/analytics.module");
+const url_preview_service_1 = require("./url-preview.service");
+const url_controller_1 = require("./url.controller");
+const url_entity_1 = require("./entities/url.entity");
+const url_service_1 = require("./url.service");
+let UrlModule = class UrlModule {
+};
+exports.UrlModule = UrlModule;
+exports.UrlModule = UrlModule = __decorate([
+    (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([url_entity_1.Url]), analytics_module_1.AnalyticsModule],
+        controllers: [url_controller_1.UrlController],
+        providers: [url_service_1.UrlService, url_preview_service_1.UrlPreviewService],
+        exports: [url_service_1.UrlService, url_preview_service_1.UrlPreviewService],
+    })
+], UrlModule);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXHVybFxcdXJsLm1vZHVsZS50cyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7QUFBQSw2Q0FBZ0Q7QUFDaEQsMkNBQXdDO0FBRXhDLG9FQUFnRTtBQUNoRSwrREFBMEQ7QUFDMUQscURBQWlEO0FBQ2pELHNEQUE0QztBQUM1QywrQ0FBMkM7QUFRcEMsSUFBTSxTQUFTLEdBQWYsTUFBTSxTQUFTO0NBQUcsQ0FBQTtBQUFaLDhCQUFTO29CQUFULFNBQVM7SUFOckIsSUFBQSxlQUFNLEVBQUM7UUFDTixPQUFPLEVBQUUsQ0FBQyx1QkFBYSxDQUFDLFVBQVUsQ0FBQyxDQUFDLGdCQUFHLENBQUMsQ0FBQyxFQUFFLGtDQUFlLENBQUM7UUFDM0QsV0FBVyxFQUFFLENBQUMsOEJBQWEsQ0FBQztRQUM1QixTQUFTLEVBQUUsQ0FBQyx3QkFBVSxFQUFFLHVDQUFpQixDQUFDO1FBQzFDLE9BQU8sRUFBRSxDQUFDLHdCQUFVLEVBQUUsdUNBQWlCLENBQUM7S0FDekMsQ0FBQztHQUNXLFNBQVMsQ0FBRyIsIm5hbWVzIjpbXSwic291cmNlcyI6WyJEOlxcTGF0aWhhblxcUHJvZ3JhbW1pbmdcXER1bW15LVByb2plY3RcXHVybC1zaG9ydGVuZXJcXHNyY1xcbW9kdWxlc1xcdXJsXFx1cmwubW9kdWxlLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IFR5cGVPcm1Nb2R1bGUgfSBmcm9tICdAbmVzdGpzL3R5cGVvcm0nO1xyXG5pbXBvcnQgeyBNb2R1bGUgfSBmcm9tICdAbmVzdGpzL2NvbW1vbic7XHJcblxyXG5pbXBvcnQgeyBBbmFseXRpY3NNb2R1bGUgfSBmcm9tICcuLi9hbmFseXRpY3MvYW5hbHl0aWNzLm1vZHVsZSc7XHJcbmltcG9ydCB7IFVybFByZXZpZXdTZXJ2aWNlIH0gZnJvbSAnLi91cmwtcHJldmlldy5zZXJ2aWNlJztcclxuaW1wb3J0IHsgVXJsQ29udHJvbGxlciB9IGZyb20gJy4vdXJsLmNvbnRyb2xsZXInO1xyXG5pbXBvcnQgeyBVcmwgfSBmcm9tICcuL2VudGl0aWVzL3VybC5lbnRpdHknO1xyXG5pbXBvcnQgeyBVcmxTZXJ2aWNlIH0gZnJvbSAnLi91cmwuc2VydmljZSc7XHJcblxyXG5ATW9kdWxlKHtcclxuICBpbXBvcnRzOiBbVHlwZU9ybU1vZHVsZS5mb3JGZWF0dXJlKFtVcmxdKSwgQW5hbHl0aWNzTW9kdWxlXSxcclxuICBjb250cm9sbGVyczogW1VybENvbnRyb2xsZXJdLFxyXG4gIHByb3ZpZGVyczogW1VybFNlcnZpY2UsIFVybFByZXZpZXdTZXJ2aWNlXSxcclxuICBleHBvcnRzOiBbVXJsU2VydmljZSwgVXJsUHJldmlld1NlcnZpY2VdLFxyXG59KVxyXG5leHBvcnQgY2xhc3MgVXJsTW9kdWxlIHt9XHJcbiJdLCJ2ZXJzaW9uIjozfQ==

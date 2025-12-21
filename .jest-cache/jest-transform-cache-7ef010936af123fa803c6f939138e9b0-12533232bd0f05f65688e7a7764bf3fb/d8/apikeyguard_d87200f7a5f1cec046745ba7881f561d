@@ -1,0 +1,22 @@
+52819cf88865d65e0dcdbcb1bd67f646
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ApiKeyGuard = void 0;
+const passport_1 = require("@nestjs/passport");
+const common_1 = require("@nestjs/common");
+/*
+API Key Guard - protect routes with API key authentication
+*/
+let ApiKeyGuard = class ApiKeyGuard extends (0, passport_1.AuthGuard)('api-key') {
+};
+exports.ApiKeyGuard = ApiKeyGuard;
+exports.ApiKeyGuard = ApiKeyGuard = __decorate([
+    (0, common_1.Injectable)()
+], ApiKeyGuard);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXGF1dGhcXGd1YXJkc1xcYXBpLWtleS5ndWFyZC50cyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7QUFBQSwrQ0FBNkM7QUFDN0MsMkNBQTRDO0FBRTVDOztFQUVFO0FBRUssSUFBTSxXQUFXLEdBQWpCLE1BQU0sV0FBWSxTQUFRLElBQUEsb0JBQVMsRUFBQyxTQUFTLENBQUM7Q0FBRyxDQUFBO0FBQTNDLGtDQUFXO3NCQUFYLFdBQVc7SUFEdkIsSUFBQSxtQkFBVSxHQUFFO0dBQ0EsV0FBVyxDQUFnQyIsIm5hbWVzIjpbXSwic291cmNlcyI6WyJEOlxcTGF0aWhhblxcUHJvZ3JhbW1pbmdcXER1bW15LVByb2plY3RcXHVybC1zaG9ydGVuZXJcXHNyY1xcbW9kdWxlc1xcYXV0aFxcZ3VhcmRzXFxhcGkta2V5Lmd1YXJkLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IEF1dGhHdWFyZCB9IGZyb20gJ0BuZXN0anMvcGFzc3BvcnQnO1xyXG5pbXBvcnQgeyBJbmplY3RhYmxlIH0gZnJvbSAnQG5lc3Rqcy9jb21tb24nO1xyXG5cclxuLyogXHJcbkFQSSBLZXkgR3VhcmQgLSBwcm90ZWN0IHJvdXRlcyB3aXRoIEFQSSBrZXkgYXV0aGVudGljYXRpb25cclxuKi9cclxuQEluamVjdGFibGUoKVxyXG5leHBvcnQgY2xhc3MgQXBpS2V5R3VhcmQgZXh0ZW5kcyBBdXRoR3VhcmQoJ2FwaS1rZXknKSB7fVxyXG4iXSwidmVyc2lvbiI6M30=

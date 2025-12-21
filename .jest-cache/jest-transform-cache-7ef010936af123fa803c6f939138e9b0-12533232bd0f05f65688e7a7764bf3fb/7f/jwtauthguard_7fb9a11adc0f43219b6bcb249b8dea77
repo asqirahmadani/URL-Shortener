@@ -1,0 +1,44 @@
+4e50ed3becee069b586569fa5cdca4a2
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.JwtAuthGuard = void 0;
+const common_1 = require("@nestjs/common");
+const passport_1 = require("@nestjs/passport");
+const core_1 = require("@nestjs/core");
+/*
+JWT Auth Guard - protect routes with JWT authentication
+*/
+let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
+    reflector;
+    constructor(reflector) {
+        super();
+        this.reflector = reflector;
+    }
+    canActivate(context) {
+        // check if route is marked as public
+        const isPublic = this.reflector.getAllAndOverride('isPublic', [
+            context.getHandler(),
+            context.getClass(),
+        ]);
+        if (isPublic) {
+            return true;
+        }
+        return super.canActivate(context);
+    }
+};
+exports.JwtAuthGuard = JwtAuthGuard;
+exports.JwtAuthGuard = JwtAuthGuard = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [typeof (_a = typeof core_1.Reflector !== "undefined" && core_1.Reflector) === "function" ? _a : Object])
+], JwtAuthGuard);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXGF1dGhcXGd1YXJkc1xcand0LWF1dGguZ3VhcmQudHMiLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7OztBQUFBLDJDQUE4RDtBQUM5RCwrQ0FBNkM7QUFDN0MsdUNBQXlDO0FBRXpDOztFQUVFO0FBRUssSUFBTSxZQUFZLEdBQWxCLE1BQU0sWUFBYSxTQUFRLElBQUEsb0JBQVMsRUFBQyxLQUFLLENBQUM7SUFDNUI7SUFBcEIsWUFBb0IsU0FBb0I7UUFDdEMsS0FBSyxFQUFFLENBQUM7UUFEVSxjQUFTLEdBQVQsU0FBUyxDQUFXO0lBRXhDLENBQUM7SUFFRCxXQUFXLENBQUMsT0FBeUI7UUFDbkMscUNBQXFDO1FBQ3JDLE1BQU0sUUFBUSxHQUFHLElBQUksQ0FBQyxTQUFTLENBQUMsaUJBQWlCLENBQVUsVUFBVSxFQUFFO1lBQ3JFLE9BQU8sQ0FBQyxVQUFVLEVBQUU7WUFDcEIsT0FBTyxDQUFDLFFBQVEsRUFBRTtTQUNuQixDQUFDLENBQUM7UUFFSCxJQUFJLFFBQVEsRUFBRSxDQUFDO1lBQ2IsT0FBTyxJQUFJLENBQUM7UUFDZCxDQUFDO1FBRUQsT0FBTyxLQUFLLENBQUMsV0FBVyxDQUFDLE9BQU8sQ0FBQyxDQUFDO0lBQ3BDLENBQUM7Q0FDRixDQUFBO0FBbEJZLG9DQUFZO3VCQUFaLFlBQVk7SUFEeEIsSUFBQSxtQkFBVSxHQUFFO3lEQUVvQixnQkFBUyxvQkFBVCxnQkFBUztHQUQ3QixZQUFZLENBa0J4QiIsIm5hbWVzIjpbXSwic291cmNlcyI6WyJEOlxcTGF0aWhhblxcUHJvZ3JhbW1pbmdcXER1bW15LVByb2plY3RcXHVybC1zaG9ydGVuZXJcXHNyY1xcbW9kdWxlc1xcYXV0aFxcZ3VhcmRzXFxqd3QtYXV0aC5ndWFyZC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBJbmplY3RhYmxlLCBFeGVjdXRpb25Db250ZXh0IH0gZnJvbSAnQG5lc3Rqcy9jb21tb24nO1xyXG5pbXBvcnQgeyBBdXRoR3VhcmQgfSBmcm9tICdAbmVzdGpzL3Bhc3Nwb3J0JztcclxuaW1wb3J0IHsgUmVmbGVjdG9yIH0gZnJvbSAnQG5lc3Rqcy9jb3JlJztcclxuXHJcbi8qIFxyXG5KV1QgQXV0aCBHdWFyZCAtIHByb3RlY3Qgcm91dGVzIHdpdGggSldUIGF1dGhlbnRpY2F0aW9uXHJcbiovXHJcbkBJbmplY3RhYmxlKClcclxuZXhwb3J0IGNsYXNzIEp3dEF1dGhHdWFyZCBleHRlbmRzIEF1dGhHdWFyZCgnand0Jykge1xyXG4gIGNvbnN0cnVjdG9yKHByaXZhdGUgcmVmbGVjdG9yOiBSZWZsZWN0b3IpIHtcclxuICAgIHN1cGVyKCk7XHJcbiAgfVxyXG5cclxuICBjYW5BY3RpdmF0ZShjb250ZXh0OiBFeGVjdXRpb25Db250ZXh0KSB7XHJcbiAgICAvLyBjaGVjayBpZiByb3V0ZSBpcyBtYXJrZWQgYXMgcHVibGljXHJcbiAgICBjb25zdCBpc1B1YmxpYyA9IHRoaXMucmVmbGVjdG9yLmdldEFsbEFuZE92ZXJyaWRlPGJvb2xlYW4+KCdpc1B1YmxpYycsIFtcclxuICAgICAgY29udGV4dC5nZXRIYW5kbGVyKCksXHJcbiAgICAgIGNvbnRleHQuZ2V0Q2xhc3MoKSxcclxuICAgIF0pO1xyXG5cclxuICAgIGlmIChpc1B1YmxpYykge1xyXG4gICAgICByZXR1cm4gdHJ1ZTtcclxuICAgIH1cclxuXHJcbiAgICByZXR1cm4gc3VwZXIuY2FuQWN0aXZhdGUoY29udGV4dCk7XHJcbiAgfVxyXG59XHJcbiJdLCJ2ZXJzaW9uIjozfQ==

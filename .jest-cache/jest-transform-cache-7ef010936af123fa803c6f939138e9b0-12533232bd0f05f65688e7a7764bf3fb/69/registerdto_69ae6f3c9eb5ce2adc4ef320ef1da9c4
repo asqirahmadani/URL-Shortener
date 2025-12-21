@@ -1,0 +1,40 @@
+a597545a2354b4b60430941ff8e0f475
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RegisterDto = void 0;
+const class_validator_1 = require("class-validator");
+class RegisterDto {
+    email;
+    name;
+    password;
+}
+exports.RegisterDto = RegisterDto;
+__decorate([
+    (0, class_validator_1.IsEmail)({}, { message: 'Email is invalid' }),
+    __metadata("design:type", String)
+], RegisterDto.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MinLength)(2),
+    (0, class_validator_1.MaxLength)(100),
+    __metadata("design:type", String)
+], RegisterDto.prototype, "name", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MinLength)(8, { message: 'Password minimal has 8 characters' }),
+    (0, class_validator_1.MaxLength)(100),
+    (0, class_validator_1.Matches)(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+        message: 'Password must contain uppercase, lowercase letters, and numbers/symbols',
+    }),
+    __metadata("design:type", String)
+], RegisterDto.prototype, "password", void 0);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXGF1dGhcXGR0b1xccmVnaXN0ZXIuZHRvLnRzIiwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7OztBQUFBLHFEQU15QjtBQUV6QixNQUFhLFdBQVc7SUFFdEIsS0FBSyxDQUFTO0lBS2QsSUFBSSxDQUFTO0lBU2IsUUFBUSxDQUFTO0NBQ2xCO0FBakJELGtDQWlCQztBQWZDO0lBREMsSUFBQSx5QkFBTyxFQUFDLEVBQUUsRUFBRSxFQUFFLE9BQU8sRUFBRSxrQkFBa0IsRUFBRSxDQUFDOzswQ0FDL0I7QUFLZDtJQUhDLElBQUEsMEJBQVEsR0FBRTtJQUNWLElBQUEsMkJBQVMsRUFBQyxDQUFDLENBQUM7SUFDWixJQUFBLDJCQUFTLEVBQUMsR0FBRyxDQUFDOzt5Q0FDRjtBQVNiO0lBUEMsSUFBQSwwQkFBUSxHQUFFO0lBQ1YsSUFBQSwyQkFBUyxFQUFDLENBQUMsRUFBRSxFQUFFLE9BQU8sRUFBRSxtQ0FBbUMsRUFBRSxDQUFDO0lBQzlELElBQUEsMkJBQVMsRUFBQyxHQUFHLENBQUM7SUFDZCxJQUFBLHlCQUFPLEVBQUMsd0RBQXdELEVBQUU7UUFDakUsT0FBTyxFQUNMLHlFQUF5RTtLQUM1RSxDQUFDOzs2Q0FDZSIsIm5hbWVzIjpbXSwic291cmNlcyI6WyJEOlxcTGF0aWhhblxcUHJvZ3JhbW1pbmdcXER1bW15LVByb2plY3RcXHVybC1zaG9ydGVuZXJcXHNyY1xcbW9kdWxlc1xcYXV0aFxcZHRvXFxyZWdpc3Rlci5kdG8udHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtcclxuICBJc0VtYWlsLFxyXG4gIElzU3RyaW5nLFxyXG4gIE1pbkxlbmd0aCxcclxuICBNYXhMZW5ndGgsXHJcbiAgTWF0Y2hlcyxcclxufSBmcm9tICdjbGFzcy12YWxpZGF0b3InO1xyXG5cclxuZXhwb3J0IGNsYXNzIFJlZ2lzdGVyRHRvIHtcclxuICBASXNFbWFpbCh7fSwgeyBtZXNzYWdlOiAnRW1haWwgaXMgaW52YWxpZCcgfSlcclxuICBlbWFpbDogc3RyaW5nO1xyXG5cclxuICBASXNTdHJpbmcoKVxyXG4gIEBNaW5MZW5ndGgoMilcclxuICBATWF4TGVuZ3RoKDEwMClcclxuICBuYW1lOiBzdHJpbmc7XHJcblxyXG4gIEBJc1N0cmluZygpXHJcbiAgQE1pbkxlbmd0aCg4LCB7IG1lc3NhZ2U6ICdQYXNzd29yZCBtaW5pbWFsIGhhcyA4IGNoYXJhY3RlcnMnIH0pXHJcbiAgQE1heExlbmd0aCgxMDApXHJcbiAgQE1hdGNoZXMoLygoPz0uKlxcZCl8KD89LipcXFcrKSkoPyFbLlxcbl0pKD89LipbQS1aXSkoPz0uKlthLXpdKS4qJC8sIHtcclxuICAgIG1lc3NhZ2U6XHJcbiAgICAgICdQYXNzd29yZCBtdXN0IGNvbnRhaW4gdXBwZXJjYXNlLCBsb3dlcmNhc2UgbGV0dGVycywgYW5kIG51bWJlcnMvc3ltYm9scycsXHJcbiAgfSlcclxuICBwYXNzd29yZDogc3RyaW5nO1xyXG59XHJcbiJdLCJ2ZXJzaW9uIjozfQ==

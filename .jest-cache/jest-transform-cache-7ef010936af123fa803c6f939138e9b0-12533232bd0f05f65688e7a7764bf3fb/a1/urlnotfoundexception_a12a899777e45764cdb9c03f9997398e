@@ -1,0 +1,153 @@
+91379abdcb3b20818088bb9aa841cf59
+"use strict";
+
+/* istanbul ignore next */
+function cov_13vfqvzoo4() {
+  var path = "D:\\Latihan\\Programming\\Dummy-Project\\url-shortener\\src\\modules\\url\\exceptions\\url-not-found.exception.ts";
+  var hash = "abaf2a4cd489df6a34c5db3d84c7c5c3d4eb3219";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "D:\\Latihan\\Programming\\Dummy-Project\\url-shortener\\src\\modules\\url\\exceptions\\url-not-found.exception.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 2,
+          column: 62
+        }
+      },
+      "1": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 3,
+          column: 38
+        }
+      },
+      "2": {
+        start: {
+          line: 4,
+          column: 17
+        },
+        end: {
+          line: 4,
+          column: 42
+        }
+      },
+      "3": {
+        start: {
+          line: 10,
+          column: 8
+        },
+        end: {
+          line: 10,
+          column: 59
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 0
+        },
+        end: {
+          line: 13,
+          column: 52
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 9,
+            column: 4
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        loc: {
+          start: {
+            line: 9,
+            column: 27
+          },
+          end: {
+            line: 11,
+            column: 5
+          }
+        },
+        line: 9
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {},
+    inputSourceMap: {
+      file: "D:\\Latihan\\Programming\\Dummy-Project\\url-shortener\\src\\modules\\url\\exceptions\\url-not-found.exception.ts",
+      mappings: ";;;AAAA,2CAAmD;AAEnD;;EAEE;AACF,MAAa,oBAAqB,SAAQ,0BAAiB;IACzD,YAAY,SAAiB;QAC3B,KAAK,CAAC,cAAc,SAAS,oBAAoB,CAAC,CAAC;IACrD,CAAC;CACF;AAJD,oDAIC",
+      names: [],
+      sources: ["D:\\Latihan\\Programming\\Dummy-Project\\url-shortener\\src\\modules\\url\\exceptions\\url-not-found.exception.ts"],
+      sourcesContent: ["import { NotFoundException } from '@nestjs/common';\r\n\r\n/* \r\nCustom exception for URL not found\r\n*/\r\nexport class UrlNotFoundException extends NotFoundException {\r\n  constructor(shortCode: string) {\r\n    super(`Short URL \"${shortCode}\" tidak ditemukan!`);\r\n  }\r\n}\r\n"],
+      version: 3
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "abaf2a4cd489df6a34c5db3d84c7c5c3d4eb3219"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_13vfqvzoo4 = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_13vfqvzoo4();
+cov_13vfqvzoo4().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_13vfqvzoo4().s[1]++;
+exports.UrlNotFoundException = void 0;
+const common_1 =
+/* istanbul ignore next */
+(cov_13vfqvzoo4().s[2]++, require("@nestjs/common"));
+/*
+Custom exception for URL not found
+*/
+class UrlNotFoundException extends
+/* istanbul ignore next */
+(common_1.NotFoundException) {
+  constructor(shortCode) {
+    /* istanbul ignore next */
+    cov_13vfqvzoo4().f[0]++;
+    cov_13vfqvzoo4().s[3]++;
+    super(`Short URL "${shortCode}" tidak ditemukan!`);
+  }
+}
+/* istanbul ignore next */
+cov_13vfqvzoo4().s[4]++;
+exports.UrlNotFoundException = UrlNotFoundException;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb21tb25fMSIsImNvdl8xM3ZmcXZ6b280IiwicyIsInJlcXVpcmUiLCJVcmxOb3RGb3VuZEV4Y2VwdGlvbiIsIk5vdEZvdW5kRXhjZXB0aW9uIiwiY29uc3RydWN0b3IiLCJzaG9ydENvZGUiLCJmIiwiZXhwb3J0cyJdLCJzb3VyY2VzIjpbIkQ6XFxMYXRpaGFuXFxQcm9ncmFtbWluZ1xcRHVtbXktUHJvamVjdFxcdXJsLXNob3J0ZW5lclxcc3JjXFxtb2R1bGVzXFx1cmxcXGV4Y2VwdGlvbnNcXHVybC1ub3QtZm91bmQuZXhjZXB0aW9uLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IE5vdEZvdW5kRXhjZXB0aW9uIH0gZnJvbSAnQG5lc3Rqcy9jb21tb24nO1xyXG5cclxuLyogXHJcbkN1c3RvbSBleGNlcHRpb24gZm9yIFVSTCBub3QgZm91bmRcclxuKi9cclxuZXhwb3J0IGNsYXNzIFVybE5vdEZvdW5kRXhjZXB0aW9uIGV4dGVuZHMgTm90Rm91bmRFeGNlcHRpb24ge1xyXG4gIGNvbnN0cnVjdG9yKHNob3J0Q29kZTogc3RyaW5nKSB7XHJcbiAgICBzdXBlcihgU2hvcnQgVVJMIFwiJHtzaG9ydENvZGV9XCIgdGlkYWsgZGl0ZW11a2FuIWApO1xyXG4gIH1cclxufVxyXG4iXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLE1BQUFBLFFBQUE7QUFBQTtBQUFBLENBQUFDLGNBQUEsR0FBQUMsQ0FBQSxPQUFBQyxPQUFBO0FBRUE7OztBQUdBLE1BQWFDLG9CQUFxQjtBQUFBO0FBQUEsQ0FBUUosUUFBQSxDQUFBSyxpQkFBaUI7RUFDekRDLFlBQVlDLFNBQWlCO0lBQUE7SUFBQU4sY0FBQSxHQUFBTyxDQUFBO0lBQUFQLGNBQUEsR0FBQUMsQ0FBQTtJQUMzQixLQUFLLENBQUMsY0FBY0ssU0FBUyxvQkFBb0IsQ0FBQztFQUNwRDs7QUFDRDtBQUFBTixjQUFBLEdBQUFDLENBQUE7QUFKRE8sT0FBQSxDQUFBTCxvQkFBQSxHQUFBQSxvQkFBQSIsImlnbm9yZUxpc3QiOltdfQ==

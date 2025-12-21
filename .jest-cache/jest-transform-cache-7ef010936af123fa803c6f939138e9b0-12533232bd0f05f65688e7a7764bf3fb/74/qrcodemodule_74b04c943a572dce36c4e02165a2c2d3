@@ -1,0 +1,24 @@
+bdbafc633b88330d32fdf4d963eb02bf
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.QrcodeModule = void 0;
+const common_1 = require("@nestjs/common");
+const qrcode_service_1 = require("./qrcode.service");
+const qrcode_controller_1 = require("./qrcode.controller");
+let QrcodeModule = class QrcodeModule {
+};
+exports.QrcodeModule = QrcodeModule;
+exports.QrcodeModule = QrcodeModule = __decorate([
+    (0, common_1.Module)({
+        providers: [qrcode_service_1.QrCodeService],
+        controllers: [qrcode_controller_1.QrCodeController],
+        exports: [qrcode_service_1.QrCodeService],
+    })
+], QrcodeModule);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXHFyY29kZVxccXJjb2RlLm1vZHVsZS50cyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7QUFBQSwyQ0FBd0M7QUFFeEMscURBQWlEO0FBQ2pELDJEQUF1RDtBQU9oRCxJQUFNLFlBQVksR0FBbEIsTUFBTSxZQUFZO0NBQUcsQ0FBQTtBQUFmLG9DQUFZO3VCQUFaLFlBQVk7SUFMeEIsSUFBQSxlQUFNLEVBQUM7UUFDTixTQUFTLEVBQUUsQ0FBQyw4QkFBYSxDQUFDO1FBQzFCLFdBQVcsRUFBRSxDQUFDLG9DQUFnQixDQUFDO1FBQy9CLE9BQU8sRUFBRSxDQUFDLDhCQUFhLENBQUM7S0FDekIsQ0FBQztHQUNXLFlBQVksQ0FBRyIsIm5hbWVzIjpbXSwic291cmNlcyI6WyJEOlxcTGF0aWhhblxcUHJvZ3JhbW1pbmdcXER1bW15LVByb2plY3RcXHVybC1zaG9ydGVuZXJcXHNyY1xcbW9kdWxlc1xccXJjb2RlXFxxcmNvZGUubW9kdWxlLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IE1vZHVsZSB9IGZyb20gJ0BuZXN0anMvY29tbW9uJztcblxuaW1wb3J0IHsgUXJDb2RlU2VydmljZSB9IGZyb20gJy4vcXJjb2RlLnNlcnZpY2UnO1xuaW1wb3J0IHsgUXJDb2RlQ29udHJvbGxlciB9IGZyb20gJy4vcXJjb2RlLmNvbnRyb2xsZXInO1xuXG5ATW9kdWxlKHtcbiAgcHJvdmlkZXJzOiBbUXJDb2RlU2VydmljZV0sXG4gIGNvbnRyb2xsZXJzOiBbUXJDb2RlQ29udHJvbGxlcl0sXG4gIGV4cG9ydHM6IFtRckNvZGVTZXJ2aWNlXSxcbn0pXG5leHBvcnQgY2xhc3MgUXJjb2RlTW9kdWxlIHt9XG4iXSwidmVyc2lvbiI6M30=

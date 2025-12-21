@@ -1,0 +1,35 @@
+1cf2908e5b9a22a5e0cbf3ce003026be
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SchedulerModule = void 0;
+const schedule_1 = require("@nestjs/schedule");
+const typeorm_1 = require("@nestjs/typeorm");
+const common_1 = require("@nestjs/common");
+const click_entity_1 = require("../analytics/entities/click.entity");
+const sync_count_task_1 = require("./tasks/sync-count.task");
+const cleanup_task_1 = require("./tasks/cleanup.task");
+const url_entity_1 = require("../url/entities/url.entity");
+const url_module_1 = require("../url/url.module");
+/*
+Scheduler Module - Manage all cron jobs
+*/
+let SchedulerModule = class SchedulerModule {
+};
+exports.SchedulerModule = SchedulerModule;
+exports.SchedulerModule = SchedulerModule = __decorate([
+    (0, common_1.Module)({
+        imports: [
+            schedule_1.ScheduleModule.forRoot(),
+            typeorm_1.TypeOrmModule.forFeature([url_entity_1.Url, click_entity_1.Click]),
+            url_module_1.UrlModule,
+        ],
+        providers: [cleanup_task_1.CleanupTask, sync_count_task_1.SyncCountsTask],
+    })
+], SchedulerModule);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXHNjaGVkdWxlclxcc2NoZWR1bGVyLm1vZHVsZS50cyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7QUFBQSwrQ0FBa0Q7QUFDbEQsNkNBQWdEO0FBQ2hELDJDQUF3QztBQUV4QyxxRUFBMkQ7QUFDM0QsNkRBQXlEO0FBQ3pELHVEQUFtRDtBQUNuRCwyREFBaUQ7QUFDakQsa0RBQThDO0FBRTlDOztFQUVFO0FBU0ssSUFBTSxlQUFlLEdBQXJCLE1BQU0sZUFBZTtDQUFHLENBQUE7QUFBbEIsMENBQWU7MEJBQWYsZUFBZTtJQVIzQixJQUFBLGVBQU0sRUFBQztRQUNOLE9BQU8sRUFBRTtZQUNQLHlCQUFjLENBQUMsT0FBTyxFQUFFO1lBQ3hCLHVCQUFhLENBQUMsVUFBVSxDQUFDLENBQUMsZ0JBQUcsRUFBRSxvQkFBSyxDQUFDLENBQUM7WUFDdEMsc0JBQVM7U0FDVjtRQUNELFNBQVMsRUFBRSxDQUFDLDBCQUFXLEVBQUUsZ0NBQWMsQ0FBQztLQUN6QyxDQUFDO0dBQ1csZUFBZSxDQUFHIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbIkQ6XFxMYXRpaGFuXFxQcm9ncmFtbWluZ1xcRHVtbXktUHJvamVjdFxcdXJsLXNob3J0ZW5lclxcc3JjXFxtb2R1bGVzXFxzY2hlZHVsZXJcXHNjaGVkdWxlci5tb2R1bGUudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgU2NoZWR1bGVNb2R1bGUgfSBmcm9tICdAbmVzdGpzL3NjaGVkdWxlJztcclxuaW1wb3J0IHsgVHlwZU9ybU1vZHVsZSB9IGZyb20gJ0BuZXN0anMvdHlwZW9ybSc7XHJcbmltcG9ydCB7IE1vZHVsZSB9IGZyb20gJ0BuZXN0anMvY29tbW9uJztcclxuXHJcbmltcG9ydCB7IENsaWNrIH0gZnJvbSAnLi4vYW5hbHl0aWNzL2VudGl0aWVzL2NsaWNrLmVudGl0eSc7XHJcbmltcG9ydCB7IFN5bmNDb3VudHNUYXNrIH0gZnJvbSAnLi90YXNrcy9zeW5jLWNvdW50LnRhc2snO1xyXG5pbXBvcnQgeyBDbGVhbnVwVGFzayB9IGZyb20gJy4vdGFza3MvY2xlYW51cC50YXNrJztcclxuaW1wb3J0IHsgVXJsIH0gZnJvbSAnLi4vdXJsL2VudGl0aWVzL3VybC5lbnRpdHknO1xyXG5pbXBvcnQgeyBVcmxNb2R1bGUgfSBmcm9tICcuLi91cmwvdXJsLm1vZHVsZSc7XHJcblxyXG4vKiBcclxuU2NoZWR1bGVyIE1vZHVsZSAtIE1hbmFnZSBhbGwgY3JvbiBqb2JzXHJcbiovXHJcbkBNb2R1bGUoe1xyXG4gIGltcG9ydHM6IFtcclxuICAgIFNjaGVkdWxlTW9kdWxlLmZvclJvb3QoKSxcclxuICAgIFR5cGVPcm1Nb2R1bGUuZm9yRmVhdHVyZShbVXJsLCBDbGlja10pLFxyXG4gICAgVXJsTW9kdWxlLFxyXG4gIF0sXHJcbiAgcHJvdmlkZXJzOiBbQ2xlYW51cFRhc2ssIFN5bmNDb3VudHNUYXNrXSxcclxufSlcclxuZXhwb3J0IGNsYXNzIFNjaGVkdWxlck1vZHVsZSB7fVxyXG4iXSwidmVyc2lvbiI6M30=

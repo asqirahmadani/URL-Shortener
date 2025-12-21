@@ -1,0 +1,106 @@
+55bb2ea6d5f2472e725e6edbfe64ed2d
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Click = void 0;
+const typeorm_1 = require("typeorm");
+const base_entity_1 = require("../../../common/entities/base.entity");
+const url_entity_1 = require("../../url/entities/url.entity");
+// Click Entity - Tracking every click to short URL
+let Click = class Click extends base_entity_1.BaseEntity {
+    urlId;
+    url;
+    ipAddress;
+    userAgent;
+    referer;
+    browser;
+    browserVersion;
+    os;
+    osVersion;
+    deviceType;
+    country;
+    city;
+    latitude;
+    longitude;
+    timezone;
+};
+exports.Click = Click;
+__decorate([
+    (0, typeorm_1.Column)({ type: 'uuid' }),
+    __metadata("design:type", String)
+], Click.prototype, "urlId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => url_entity_1.Url, (url) => url.clicks, {
+        onDelete: 'CASCADE',
+    }),
+    (0, typeorm_1.JoinColumn)({ name: 'urlId' }),
+    __metadata("design:type", typeof (_a = typeof url_entity_1.Url !== "undefined" && url_entity_1.Url) === "function" ? _a : Object)
+], Click.prototype, "url", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 45 }),
+    __metadata("design:type", String)
+], Click.prototype, "ipAddress", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", Object)
+], Click.prototype, "userAgent", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", Object)
+], Click.prototype, "referer", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 50, nullable: true }),
+    __metadata("design:type", Object)
+], Click.prototype, "browser", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 50, nullable: true }),
+    __metadata("design:type", Object)
+], Click.prototype, "browserVersion", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 50, nullable: true }),
+    __metadata("design:type", Object)
+], Click.prototype, "os", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 50, nullable: true }),
+    __metadata("design:type", Object)
+], Click.prototype, "osVersion", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 20, nullable: true }),
+    __metadata("design:type", Object)
+], Click.prototype, "deviceType", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 2, nullable: true }),
+    __metadata("design:type", Object)
+], Click.prototype, "country", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 100, nullable: true }),
+    __metadata("design:type", Object)
+], Click.prototype, "city", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'decimal', precision: 10, scale: 8, nullable: true }),
+    __metadata("design:type", Object)
+], Click.prototype, "latitude", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'decimal', precision: 11, scale: 8, nullable: true }),
+    __metadata("design:type", Object)
+], Click.prototype, "longitude", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 50, nullable: true }),
+    __metadata("design:type", Object)
+], Click.prototype, "timezone", void 0);
+exports.Click = Click = __decorate([
+    (0, typeorm_1.Entity)('clicks'),
+    (0, typeorm_1.Index)(['urlId', 'createdAt']),
+    (0, typeorm_1.Index)(['createdAt']),
+    (0, typeorm_1.Index)(['country'])
+], Click);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXGFuYWx5dGljc1xcZW50aXRpZXNcXGNsaWNrLmVudGl0eS50cyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7O0FBQUEscUNBQXVFO0FBQ3ZFLHNFQUFrRTtBQUNsRSw4REFBb0Q7QUFFcEQsbURBQW1EO0FBSzVDLElBQU0sS0FBSyxHQUFYLE1BQU0sS0FBTSxTQUFRLHdCQUFVO0lBRW5DLEtBQUssQ0FBUztJQU1kLEdBQUcsQ0FBTTtJQUdULFNBQVMsQ0FBUztJQUdsQixTQUFTLENBQWdCO0lBR3pCLE9BQU8sQ0FBZ0I7SUFHdkIsT0FBTyxDQUFnQjtJQUd2QixjQUFjLENBQWdCO0lBRzlCLEVBQUUsQ0FBZ0I7SUFHbEIsU0FBUyxDQUFnQjtJQUd6QixVQUFVLENBQWdCO0lBRzFCLE9BQU8sQ0FBZ0I7SUFHdkIsSUFBSSxDQUFnQjtJQUdwQixRQUFRLENBQWdCO0lBR3hCLFNBQVMsQ0FBZ0I7SUFHekIsUUFBUSxDQUFnQjtDQUN6QixDQUFBO0FBaERZLHNCQUFLO0FBRWhCO0lBREMsSUFBQSxnQkFBTSxFQUFDLEVBQUUsSUFBSSxFQUFFLE1BQU0sRUFBRSxDQUFDOztvQ0FDWDtBQU1kO0lBSkMsSUFBQSxtQkFBUyxFQUFDLEdBQUcsRUFBRSxDQUFDLGdCQUFHLEVBQUUsQ0FBQyxHQUFHLEVBQUUsRUFBRSxDQUFDLEdBQUcsQ0FBQyxNQUFNLEVBQUU7UUFDekMsUUFBUSxFQUFFLFNBQVM7S0FDcEIsQ0FBQztJQUNELElBQUEsb0JBQVUsRUFBQyxFQUFFLElBQUksRUFBRSxPQUFPLEVBQUUsQ0FBQztrREFDekIsZ0JBQUcsb0JBQUgsZ0JBQUc7a0NBQUM7QUFHVDtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLEVBQUUsRUFBRSxDQUFDOzt3Q0FDdEI7QUFHbEI7SUFEQyxJQUFBLGdCQUFNLEVBQUMsRUFBRSxJQUFJLEVBQUUsTUFBTSxFQUFFLFFBQVEsRUFBRSxJQUFJLEVBQUUsQ0FBQzs7d0NBQ2hCO0FBR3pCO0lBREMsSUFBQSxnQkFBTSxFQUFDLEVBQUUsSUFBSSxFQUFFLE1BQU0sRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUM7O3NDQUNsQjtBQUd2QjtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLEVBQUUsRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUM7O3NDQUNqQztBQUd2QjtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLEVBQUUsRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUM7OzZDQUMxQjtBQUc5QjtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLEVBQUUsRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUM7O2lDQUN0QztBQUdsQjtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLEVBQUUsRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUM7O3dDQUMvQjtBQUd6QjtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLEVBQUUsRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUM7O3lDQUM5QjtBQUcxQjtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLENBQUMsRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUM7O3NDQUNoQztBQUd2QjtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLEdBQUcsRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUM7O21DQUNyQztBQUdwQjtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsU0FBUyxFQUFFLEVBQUUsRUFBRSxLQUFLLEVBQUUsQ0FBQyxFQUFFLFFBQVEsRUFBRSxJQUFJLEVBQUUsQ0FBQzs7dUNBQzdDO0FBR3hCO0lBREMsSUFBQSxnQkFBTSxFQUFDLEVBQUUsSUFBSSxFQUFFLFNBQVMsRUFBRSxTQUFTLEVBQUUsRUFBRSxFQUFFLEtBQUssRUFBRSxDQUFDLEVBQUUsUUFBUSxFQUFFLElBQUksRUFBRSxDQUFDOzt3Q0FDNUM7QUFHekI7SUFEQyxJQUFBLGdCQUFNLEVBQUMsRUFBRSxJQUFJLEVBQUUsU0FBUyxFQUFFLE1BQU0sRUFBRSxFQUFFLEVBQUUsUUFBUSxFQUFFLElBQUksRUFBRSxDQUFDOzt1Q0FDaEM7Z0JBL0NiLEtBQUs7SUFKakIsSUFBQSxnQkFBTSxFQUFDLFFBQVEsQ0FBQztJQUNoQixJQUFBLGVBQUssRUFBQyxDQUFDLE9BQU8sRUFBRSxXQUFXLENBQUMsQ0FBQztJQUM3QixJQUFBLGVBQUssRUFBQyxDQUFDLFdBQVcsQ0FBQyxDQUFDO0lBQ3BCLElBQUEsZUFBSyxFQUFDLENBQUMsU0FBUyxDQUFDLENBQUM7R0FDTixLQUFLLENBZ0RqQiIsIm5hbWVzIjpbXSwic291cmNlcyI6WyJEOlxcTGF0aWhhblxcUHJvZ3JhbW1pbmdcXER1bW15LVByb2plY3RcXHVybC1zaG9ydGVuZXJcXHNyY1xcbW9kdWxlc1xcYW5hbHl0aWNzXFxlbnRpdGllc1xcY2xpY2suZW50aXR5LnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IEVudGl0eSwgQ29sdW1uLCBJbmRleCwgTWFueVRvT25lLCBKb2luQ29sdW1uIH0gZnJvbSAndHlwZW9ybSc7XHJcbmltcG9ydCB7IEJhc2VFbnRpdHkgfSBmcm9tICcuLi8uLi8uLi9jb21tb24vZW50aXRpZXMvYmFzZS5lbnRpdHknO1xyXG5pbXBvcnQgeyBVcmwgfSBmcm9tICcuLi8uLi91cmwvZW50aXRpZXMvdXJsLmVudGl0eSc7XHJcblxyXG4vLyBDbGljayBFbnRpdHkgLSBUcmFja2luZyBldmVyeSBjbGljayB0byBzaG9ydCBVUkxcclxuQEVudGl0eSgnY2xpY2tzJylcclxuQEluZGV4KFsndXJsSWQnLCAnY3JlYXRlZEF0J10pXHJcbkBJbmRleChbJ2NyZWF0ZWRBdCddKVxyXG5ASW5kZXgoWydjb3VudHJ5J10pXHJcbmV4cG9ydCBjbGFzcyBDbGljayBleHRlbmRzIEJhc2VFbnRpdHkge1xyXG4gIEBDb2x1bW4oeyB0eXBlOiAndXVpZCcgfSlcclxuICB1cmxJZDogc3RyaW5nO1xyXG5cclxuICBATWFueVRvT25lKCgpID0+IFVybCwgKHVybCkgPT4gdXJsLmNsaWNrcywge1xyXG4gICAgb25EZWxldGU6ICdDQVNDQURFJyxcclxuICB9KVxyXG4gIEBKb2luQ29sdW1uKHsgbmFtZTogJ3VybElkJyB9KVxyXG4gIHVybDogVXJsO1xyXG5cclxuICBAQ29sdW1uKHsgdHlwZTogJ3ZhcmNoYXInLCBsZW5ndGg6IDQ1IH0pXHJcbiAgaXBBZGRyZXNzOiBzdHJpbmc7XHJcblxyXG4gIEBDb2x1bW4oeyB0eXBlOiAndGV4dCcsIG51bGxhYmxlOiB0cnVlIH0pXHJcbiAgdXNlckFnZW50OiBzdHJpbmcgfCBudWxsO1xyXG5cclxuICBAQ29sdW1uKHsgdHlwZTogJ3RleHQnLCBudWxsYWJsZTogdHJ1ZSB9KVxyXG4gIHJlZmVyZXI6IHN0cmluZyB8IG51bGw7XHJcblxyXG4gIEBDb2x1bW4oeyB0eXBlOiAndmFyY2hhcicsIGxlbmd0aDogNTAsIG51bGxhYmxlOiB0cnVlIH0pXHJcbiAgYnJvd3Nlcjogc3RyaW5nIHwgbnVsbDtcclxuXHJcbiAgQENvbHVtbih7IHR5cGU6ICd2YXJjaGFyJywgbGVuZ3RoOiA1MCwgbnVsbGFibGU6IHRydWUgfSlcclxuICBicm93c2VyVmVyc2lvbjogc3RyaW5nIHwgbnVsbDtcclxuXHJcbiAgQENvbHVtbih7IHR5cGU6ICd2YXJjaGFyJywgbGVuZ3RoOiA1MCwgbnVsbGFibGU6IHRydWUgfSlcclxuICBvczogc3RyaW5nIHwgbnVsbDtcclxuXHJcbiAgQENvbHVtbih7IHR5cGU6ICd2YXJjaGFyJywgbGVuZ3RoOiA1MCwgbnVsbGFibGU6IHRydWUgfSlcclxuICBvc1ZlcnNpb246IHN0cmluZyB8IG51bGw7XHJcblxyXG4gIEBDb2x1bW4oeyB0eXBlOiAndmFyY2hhcicsIGxlbmd0aDogMjAsIG51bGxhYmxlOiB0cnVlIH0pXHJcbiAgZGV2aWNlVHlwZTogc3RyaW5nIHwgbnVsbDtcclxuXHJcbiAgQENvbHVtbih7IHR5cGU6ICd2YXJjaGFyJywgbGVuZ3RoOiAyLCBudWxsYWJsZTogdHJ1ZSB9KVxyXG4gIGNvdW50cnk6IHN0cmluZyB8IG51bGw7XHJcblxyXG4gIEBDb2x1bW4oeyB0eXBlOiAndmFyY2hhcicsIGxlbmd0aDogMTAwLCBudWxsYWJsZTogdHJ1ZSB9KVxyXG4gIGNpdHk6IHN0cmluZyB8IG51bGw7XHJcblxyXG4gIEBDb2x1bW4oeyB0eXBlOiAnZGVjaW1hbCcsIHByZWNpc2lvbjogMTAsIHNjYWxlOiA4LCBudWxsYWJsZTogdHJ1ZSB9KVxyXG4gIGxhdGl0dWRlOiBudW1iZXIgfCBudWxsO1xyXG5cclxuICBAQ29sdW1uKHsgdHlwZTogJ2RlY2ltYWwnLCBwcmVjaXNpb246IDExLCBzY2FsZTogOCwgbnVsbGFibGU6IHRydWUgfSlcclxuICBsb25naXR1ZGU6IG51bWJlciB8IG51bGw7XHJcblxyXG4gIEBDb2x1bW4oeyB0eXBlOiAndmFyY2hhcicsIGxlbmd0aDogNTAsIG51bGxhYmxlOiB0cnVlIH0pXHJcbiAgdGltZXpvbmU6IHN0cmluZyB8IG51bGw7XHJcbn1cclxuIl0sInZlcnNpb24iOjN9

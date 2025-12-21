@@ -1,0 +1,28 @@
+d634b5195ed068ccca494335e7950065
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LoginDto = void 0;
+const class_validator_1 = require("class-validator");
+class LoginDto {
+    email;
+    password;
+}
+exports.LoginDto = LoginDto;
+__decorate([
+    (0, class_validator_1.IsEmail)(),
+    __metadata("design:type", String)
+], LoginDto.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], LoginDto.prototype, "password", void 0);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXGF1dGhcXGR0b1xcbG9naW4uZHRvLnRzIiwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7OztBQUFBLHFEQUFvRDtBQUVwRCxNQUFhLFFBQVE7SUFFbkIsS0FBSyxDQUFTO0lBR2QsUUFBUSxDQUFTO0NBQ2xCO0FBTkQsNEJBTUM7QUFKQztJQURDLElBQUEseUJBQU8sR0FBRTs7dUNBQ0k7QUFHZDtJQURDLElBQUEsMEJBQVEsR0FBRTs7MENBQ00iLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXGF1dGhcXGR0b1xcbG9naW4uZHRvLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IElzRW1haWwsIElzU3RyaW5nIH0gZnJvbSAnY2xhc3MtdmFsaWRhdG9yJztcclxuXHJcbmV4cG9ydCBjbGFzcyBMb2dpbkR0byB7XHJcbiAgQElzRW1haWwoKVxyXG4gIGVtYWlsOiBzdHJpbmc7XHJcblxyXG4gIEBJc1N0cmluZygpXHJcbiAgcGFzc3dvcmQ6IHN0cmluZztcclxufVxyXG4iXSwidmVyc2lvbiI6M30=

@@ -1,0 +1,91 @@
+08bee28e7a263a7b9a4f89c442e95501
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Url = void 0;
+const typeorm_1 = require("typeorm");
+const base_entity_1 = require("../../../common/entities/base.entity");
+const click_entity_1 = require("../../analytics/entities/click.entity");
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
+// URL Entity - Main table shortened URLs
+let Url = class Url extends base_entity_1.BaseEntity {
+    originalUrl;
+    shortCode;
+    customAlias;
+    title;
+    userId;
+    clickCount;
+    expiresAt;
+    isActive;
+    password;
+    maxClicks;
+    // Relation to click tracking
+    clicks;
+    get shortUrl() {
+        return `${process.env.BASE_URL}/${this.shortCode}`;
+    }
+};
+exports.Url = Url;
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text' }),
+    __metadata("design:type", String)
+], Url.prototype, "originalUrl", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 50, unique: true }),
+    __metadata("design:type", String)
+], Url.prototype, "shortCode", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 50, nullable: true }),
+    __metadata("design:type", Object)
+], Url.prototype, "customAlias", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 255, nullable: true }),
+    __metadata("design:type", Object)
+], Url.prototype, "title", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 100, nullable: true }),
+    __metadata("design:type", Object)
+], Url.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
+    __metadata("design:type", Number)
+], Url.prototype, "clickCount", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'timestamp with time zone', nullable: true }),
+    __metadata("design:type", Object)
+], Url.prototype, "expiresAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'boolean', default: true }),
+    __metadata("design:type", Boolean)
+], Url.prototype, "isActive", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 60, nullable: true }),
+    __metadata("design:type", Object)
+], Url.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
+    __metadata("design:type", Object)
+], Url.prototype, "maxClicks", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => click_entity_1.Click, (click) => click.url, {
+        cascade: false,
+    }),
+    __metadata("design:type", Array)
+], Url.prototype, "clicks", void 0);
+exports.Url = Url = __decorate([
+    (0, typeorm_1.Entity)('urls'),
+    (0, typeorm_1.Index)(['shortCode'], { unique: true }),
+    (0, typeorm_1.Index)(['userId']),
+    (0, typeorm_1.Index)(['expiresAt'])
+], Url);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXHVybFxcZW50aXRpZXNcXHVybC5lbnRpdHkudHMiLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7OztBQUFBLHFDQUEyRDtBQUMzRCxzRUFBa0U7QUFDbEUsd0VBQThEO0FBQzlELG1DQUFnQztBQUVoQyxJQUFBLGVBQU0sR0FBRSxDQUFDO0FBRVQseUNBQXlDO0FBS2xDLElBQU0sR0FBRyxHQUFULE1BQU0sR0FBSSxTQUFRLHdCQUFVO0lBRWpDLFdBQVcsQ0FBUztJQUdwQixTQUFTLENBQVM7SUFHbEIsV0FBVyxDQUFnQjtJQUczQixLQUFLLENBQWdCO0lBR3JCLE1BQU0sQ0FBZ0I7SUFHdEIsVUFBVSxDQUFTO0lBR25CLFNBQVMsQ0FBYztJQUd2QixRQUFRLENBQVU7SUFHbEIsUUFBUSxDQUFnQjtJQUd4QixTQUFTLENBQWdCO0lBRXpCLDZCQUE2QjtJQUk3QixNQUFNLENBQVU7SUFFaEIsSUFBSSxRQUFRO1FBQ1YsT0FBTyxHQUFHLE9BQU8sQ0FBQyxHQUFHLENBQUMsUUFBUSxJQUFJLElBQUksQ0FBQyxTQUFTLEVBQUUsQ0FBQztJQUNyRCxDQUFDO0NBQ0YsQ0FBQTtBQXhDWSxrQkFBRztBQUVkO0lBREMsSUFBQSxnQkFBTSxFQUFDLEVBQUUsSUFBSSxFQUFFLE1BQU0sRUFBRSxDQUFDOzt3Q0FDTDtBQUdwQjtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLEVBQUUsRUFBRSxNQUFNLEVBQUUsSUFBSSxFQUFFLENBQUM7O3NDQUNwQztBQUdsQjtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLEVBQUUsRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUM7O3dDQUM3QjtBQUczQjtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLEdBQUcsRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUM7O2tDQUNwQztBQUdyQjtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxTQUFTLEVBQUUsTUFBTSxFQUFFLEdBQUcsRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLENBQUM7O21DQUNuQztBQUd0QjtJQURDLElBQUEsZ0JBQU0sRUFBQyxFQUFFLElBQUksRUFBRSxLQUFLLEVBQUUsT0FBTyxFQUFFLENBQUMsRUFBRSxDQUFDOzt1Q0FDakI7QUFHbkI7SUFEQyxJQUFBLGdCQUFNLEVBQUMsRUFBRSxJQUFJLEVBQUUsMEJBQTBCLEVBQUUsUUFBUSxFQUFFLElBQUksRUFBRSxDQUFDOztzQ0FDdEM7QUFHdkI7SUFEQyxJQUFBLGdCQUFNLEVBQUMsRUFBRSxJQUFJLEVBQUUsU0FBUyxFQUFFLE9BQU8sRUFBRSxJQUFJLEVBQUUsQ0FBQzs7cUNBQ3pCO0FBR2xCO0lBREMsSUFBQSxnQkFBTSxFQUFDLEVBQUUsSUFBSSxFQUFFLFNBQVMsRUFBRSxNQUFNLEVBQUUsRUFBRSxFQUFFLFFBQVEsRUFBRSxJQUFJLEVBQUUsQ0FBQzs7cUNBQ2hDO0FBR3hCO0lBREMsSUFBQSxnQkFBTSxFQUFDLEVBQUUsSUFBSSxFQUFFLEtBQUssRUFBRSxPQUFPLEVBQUUsQ0FBQyxFQUFFLENBQUM7O3NDQUNYO0FBTXpCO0lBSEMsSUFBQSxtQkFBUyxFQUFDLEdBQUcsRUFBRSxDQUFDLG9CQUFLLEVBQUUsQ0FBQyxLQUFLLEVBQUUsRUFBRSxDQUFDLEtBQUssQ0FBQyxHQUFHLEVBQUU7UUFDNUMsT0FBTyxFQUFFLEtBQUs7S0FDZixDQUFDOzttQ0FDYztjQW5DTCxHQUFHO0lBSmYsSUFBQSxnQkFBTSxFQUFDLE1BQU0sQ0FBQztJQUNkLElBQUEsZUFBSyxFQUFDLENBQUMsV0FBVyxDQUFDLEVBQUUsRUFBRSxNQUFNLEVBQUUsSUFBSSxFQUFFLENBQUM7SUFDdEMsSUFBQSxlQUFLLEVBQUMsQ0FBQyxRQUFRLENBQUMsQ0FBQztJQUNqQixJQUFBLGVBQUssRUFBQyxDQUFDLFdBQVcsQ0FBQyxDQUFDO0dBQ1IsR0FBRyxDQXdDZiIsIm5hbWVzIjpbXSwic291cmNlcyI6WyJEOlxcTGF0aWhhblxcUHJvZ3JhbW1pbmdcXER1bW15LVByb2plY3RcXHVybC1zaG9ydGVuZXJcXHNyY1xcbW9kdWxlc1xcdXJsXFxlbnRpdGllc1xcdXJsLmVudGl0eS50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBFbnRpdHksIENvbHVtbiwgSW5kZXgsIE9uZVRvTWFueSB9IGZyb20gJ3R5cGVvcm0nO1xyXG5pbXBvcnQgeyBCYXNlRW50aXR5IH0gZnJvbSAnLi4vLi4vLi4vY29tbW9uL2VudGl0aWVzL2Jhc2UuZW50aXR5JztcclxuaW1wb3J0IHsgQ2xpY2sgfSBmcm9tICcuLi8uLi9hbmFseXRpY3MvZW50aXRpZXMvY2xpY2suZW50aXR5JztcclxuaW1wb3J0IHsgY29uZmlnIH0gZnJvbSAnZG90ZW52JztcclxuXHJcbmNvbmZpZygpO1xyXG5cclxuLy8gVVJMIEVudGl0eSAtIE1haW4gdGFibGUgc2hvcnRlbmVkIFVSTHNcclxuQEVudGl0eSgndXJscycpXHJcbkBJbmRleChbJ3Nob3J0Q29kZSddLCB7IHVuaXF1ZTogdHJ1ZSB9KVxyXG5ASW5kZXgoWyd1c2VySWQnXSlcclxuQEluZGV4KFsnZXhwaXJlc0F0J10pXHJcbmV4cG9ydCBjbGFzcyBVcmwgZXh0ZW5kcyBCYXNlRW50aXR5IHtcclxuICBAQ29sdW1uKHsgdHlwZTogJ3RleHQnIH0pXHJcbiAgb3JpZ2luYWxVcmw6IHN0cmluZztcclxuXHJcbiAgQENvbHVtbih7IHR5cGU6ICd2YXJjaGFyJywgbGVuZ3RoOiA1MCwgdW5pcXVlOiB0cnVlIH0pXHJcbiAgc2hvcnRDb2RlOiBzdHJpbmc7XHJcblxyXG4gIEBDb2x1bW4oeyB0eXBlOiAndmFyY2hhcicsIGxlbmd0aDogNTAsIG51bGxhYmxlOiB0cnVlIH0pXHJcbiAgY3VzdG9tQWxpYXM6IHN0cmluZyB8IG51bGw7XHJcblxyXG4gIEBDb2x1bW4oeyB0eXBlOiAndmFyY2hhcicsIGxlbmd0aDogMjU1LCBudWxsYWJsZTogdHJ1ZSB9KVxyXG4gIHRpdGxlOiBzdHJpbmcgfCBudWxsO1xyXG5cclxuICBAQ29sdW1uKHsgdHlwZTogJ3ZhcmNoYXInLCBsZW5ndGg6IDEwMCwgbnVsbGFibGU6IHRydWUgfSlcclxuICB1c2VySWQ6IHN0cmluZyB8IG51bGw7XHJcblxyXG4gIEBDb2x1bW4oeyB0eXBlOiAnaW50JywgZGVmYXVsdDogMCB9KVxyXG4gIGNsaWNrQ291bnQ6IG51bWJlcjtcclxuXHJcbiAgQENvbHVtbih7IHR5cGU6ICd0aW1lc3RhbXAgd2l0aCB0aW1lIHpvbmUnLCBudWxsYWJsZTogdHJ1ZSB9KVxyXG4gIGV4cGlyZXNBdDogRGF0ZSB8IG51bGw7XHJcblxyXG4gIEBDb2x1bW4oeyB0eXBlOiAnYm9vbGVhbicsIGRlZmF1bHQ6IHRydWUgfSlcclxuICBpc0FjdGl2ZTogYm9vbGVhbjtcclxuXHJcbiAgQENvbHVtbih7IHR5cGU6ICd2YXJjaGFyJywgbGVuZ3RoOiA2MCwgbnVsbGFibGU6IHRydWUgfSlcclxuICBwYXNzd29yZDogc3RyaW5nIHwgbnVsbDtcclxuXHJcbiAgQENvbHVtbih7IHR5cGU6ICdpbnQnLCBkZWZhdWx0OiAwIH0pXHJcbiAgbWF4Q2xpY2tzOiBudW1iZXIgfCBudWxsO1xyXG5cclxuICAvLyBSZWxhdGlvbiB0byBjbGljayB0cmFja2luZ1xyXG4gIEBPbmVUb01hbnkoKCkgPT4gQ2xpY2ssIChjbGljaykgPT4gY2xpY2sudXJsLCB7XHJcbiAgICBjYXNjYWRlOiBmYWxzZSxcclxuICB9KVxyXG4gIGNsaWNrczogQ2xpY2tbXTtcclxuXHJcbiAgZ2V0IHNob3J0VXJsKCk6IHN0cmluZyB7XHJcbiAgICByZXR1cm4gYCR7cHJvY2Vzcy5lbnYuQkFTRV9VUkx9LyR7dGhpcy5zaG9ydENvZGV9YDtcclxuICB9XHJcbn1cclxuIl0sInZlcnNpb24iOjN9

@@ -1,0 +1,31 @@
+21440cb8a06f611bbd87aadcd9534784
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BulkCreateUrlDto = void 0;
+const class_validator_1 = require("class-validator");
+const create_url_dto_1 = require("./create-url.dto");
+const class_transformer_1 = require("class-transformer");
+/*
+DTO for bulk URL creation
+*/
+class BulkCreateUrlDto {
+    urls;
+}
+exports.BulkCreateUrlDto = BulkCreateUrlDto;
+__decorate([
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.ValidateNested)({ each: true }),
+    (0, class_transformer_1.Type)(() => create_url_dto_1.CreateUrlDto),
+    (0, class_validator_1.ArrayMaxSize)(100, { message: 'Maximum 100 URLs per batch' }),
+    __metadata("design:type", Array)
+], BulkCreateUrlDto.prototype, "urls", void 0);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXHVybFxcZHRvXFxidWxrLWNyZWF0ZS11cmwuZHRvLnRzIiwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7OztBQUFBLHFEQUF3RTtBQUN4RSxxREFBZ0Q7QUFDaEQseURBQXlDO0FBRXpDOztFQUVFO0FBQ0YsTUFBYSxnQkFBZ0I7SUFLM0IsSUFBSSxDQUFpQjtDQUN0QjtBQU5ELDRDQU1DO0FBREM7SUFKQyxJQUFBLHlCQUFPLEdBQUU7SUFDVCxJQUFBLGdDQUFjLEVBQUMsRUFBRSxJQUFJLEVBQUUsSUFBSSxFQUFFLENBQUM7SUFDOUIsSUFBQSx3QkFBSSxFQUFDLEdBQUcsRUFBRSxDQUFDLDZCQUFZLENBQUM7SUFDeEIsSUFBQSw4QkFBWSxFQUFDLEdBQUcsRUFBRSxFQUFFLE9BQU8sRUFBRSw0QkFBNEIsRUFBRSxDQUFDOzs4Q0FDeEMiLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiRDpcXExhdGloYW5cXFByb2dyYW1taW5nXFxEdW1teS1Qcm9qZWN0XFx1cmwtc2hvcnRlbmVyXFxzcmNcXG1vZHVsZXNcXHVybFxcZHRvXFxidWxrLWNyZWF0ZS11cmwuZHRvLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IElzQXJyYXksIFZhbGlkYXRlTmVzdGVkLCBBcnJheU1heFNpemUgfSBmcm9tICdjbGFzcy12YWxpZGF0b3InO1xyXG5pbXBvcnQgeyBDcmVhdGVVcmxEdG8gfSBmcm9tICcuL2NyZWF0ZS11cmwuZHRvJztcclxuaW1wb3J0IHsgVHlwZSB9IGZyb20gJ2NsYXNzLXRyYW5zZm9ybWVyJztcclxuXHJcbi8qIFxyXG5EVE8gZm9yIGJ1bGsgVVJMIGNyZWF0aW9uXHJcbiovXHJcbmV4cG9ydCBjbGFzcyBCdWxrQ3JlYXRlVXJsRHRvIHtcclxuICBASXNBcnJheSgpXHJcbiAgQFZhbGlkYXRlTmVzdGVkKHsgZWFjaDogdHJ1ZSB9KVxyXG4gIEBUeXBlKCgpID0+IENyZWF0ZVVybER0bylcclxuICBAQXJyYXlNYXhTaXplKDEwMCwgeyBtZXNzYWdlOiAnTWF4aW11bSAxMDAgVVJMcyBwZXIgYmF0Y2gnIH0pXHJcbiAgdXJsczogQ3JlYXRlVXJsRHRvW107XHJcbn1cclxuIl0sInZlcnNpb24iOjN9
