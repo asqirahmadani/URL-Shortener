@@ -50,7 +50,11 @@ module.exports = {
     '!src/**/*.constant.ts',
     '!src/**/*.enum.ts',
     '!src/**/*.type.ts',
+    '!src/**/*.exception.ts',
+    '!src/**/*.validation.ts',
     '!src/**/index.ts',
+    '!src/app.controller.ts',
+    '!src/app.service.ts',
     '!src/main.ts',
     // Exclude migration files
     '!src/**/migrations/**',

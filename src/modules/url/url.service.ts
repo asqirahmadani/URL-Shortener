@@ -246,10 +246,12 @@ export class UrlService {
     limit: number = 10,
     password: string,
   ): Promise<{ urls: Url[]; total: number; page: number; totalPages: number }> {
-    if (
-      !password ||
-      password !== this.configService.get<string>('ADMIN_PASS')
-    ) {
+    const adminPass = this.configService.get<string>(
+      'ADMIN_PASS',
+      'aklnsfsokdgfnowqaeihnwierfhn',
+    );
+
+    if (!password || password !== adminPass) {
       throw new UnauthorizedException(
         'Need a correct password to access this!',
       );

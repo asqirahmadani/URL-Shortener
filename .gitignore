@@ -57,3 +57,4 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 test-rate-limit.js
 latihan.js
 url-shortener.code-workspace
+/.jest-cache
