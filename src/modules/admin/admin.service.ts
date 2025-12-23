@@ -35,6 +35,7 @@ export class AdminService {
     const expiredUrls = await this.urlRepository
       .createQueryBuilder('url')
       .where('url.expiresAt < :now', { now: new Date() })
+      .andWhere('url.isActive = :isActive', { isActive: true })
       .getCount();
 
     const totalClicks = await this.clickRepository.count();

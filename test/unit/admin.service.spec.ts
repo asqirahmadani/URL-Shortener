@@ -13,6 +13,7 @@ describe('AdminService', () => {
 
   const mockQueryBuilder = {
     where: jest.fn().mockReturnThis(),
+    andWhere: jest.fn().mockReturnThis(),
     getCount: jest.fn().mockResolvedValue(5),
   };
 
@@ -84,7 +85,7 @@ describe('AdminService', () => {
         clicks: {
           total: 500,
           today: 50,
-          thisWeek: 200,
+          thisWeek: 20,
         },
         topUrls: [
           { shortCode: 'abc123', clicks: 100 },
